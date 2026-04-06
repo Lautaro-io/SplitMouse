@@ -8,6 +8,6 @@ interface ParticipantRepository {
 
     suspend fun deleteParticipant(participant: Participant)
 
-    suspend fun getAllParticipants(): List<Participant>
+    suspend fun getParticipantsByEvent(eventId : Long): List<Participant>
 
 }
