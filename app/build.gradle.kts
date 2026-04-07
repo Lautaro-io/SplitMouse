@@ -58,6 +58,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     // 🔹 Koin
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     // 🔹 Room
     implementation(libs.room.runtime)
@@ -70,4 +71,7 @@ dependencies {
     // 🔹 Coroutines
     implementation(libs.coroutines.android)
     implementation(libs.navigation.compose)
+
+    implementation(libs.material.icons.extended)
+
 }
