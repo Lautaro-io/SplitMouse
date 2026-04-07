@@ -11,7 +11,6 @@ import com.chelo.splitmouse.domain.repositories.ParticipantRepository
 import com.chelo.splitmouse.viewmodel.MainViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import org.koin.plugin.module.dsl.viewModel
 
 val appModule = module {
 

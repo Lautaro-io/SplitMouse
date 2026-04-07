@@ -2,7 +2,6 @@ package com.chelo.splitmouse.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chelo.splitmouse.data.repositories.EventRepositoryImpl
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.domain.repositories.EventRepository
 import kotlinx.coroutines.flow.MutableStateFlow
