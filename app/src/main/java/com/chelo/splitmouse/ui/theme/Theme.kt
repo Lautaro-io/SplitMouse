@@ -9,6 +9,13 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import com.chelo.splitmouse.R
+import com.chelo.splitmouse.ui.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -32,6 +39,42 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
+
+val BeVietnamPro = FontFamily(
+    Font(R.font.be_vietnam_pro_thin, FontWeight.Thin),
+    Font(R.font.be_vietnam_pro_thinitalic, FontWeight.Thin, FontStyle.Italic),
+    Font(R.font.be_vietnam_pro_extralight, FontWeight.ExtraLight),
+    Font(R.font.be_vietnam_pro_extralightitalic, FontWeight.ExtraLight, FontStyle.Italic),
+    Font(R.font.be_vietnam_pro_regular, FontWeight.Normal),
+    Font(R.font.be_vietnam_pro_medium, FontWeight.Medium),
+    Font(R.font.be_vietnam_pro_semibold, FontWeight.SemiBold),
+    Font(R.font.be_vietnam_pro_semibolditalic, FontWeight.SemiBold, FontStyle.Italic),
+    Font(R.font.be_vietnam_pro_bold, FontWeight.Bold),
+    Font(R.font.be_vietnam_pro_bolditalic, FontWeight.Bold, FontStyle.Italic),
+    Font(R.font.be_vietnam_pro_extrabold, FontWeight.ExtraBold),
+    Font(R.font.be_vietnam_pro_extrabolditalic, FontWeight.ExtraBold, FontStyle.Italic),
+    Font(R.font.be_vietnam_pro_black, FontWeight.Black),
+    Font(R.font.be_vietnam_pro_blackitalic, FontWeight.Black, FontStyle.Italic)
+)
+
+// Configuramos la tipografía base de Material 3 para que use esta familia
+val AppTypography = androidx.compose.material3.Typography(
+    displayLarge = TextStyle(fontFamily = BeVietnamPro),
+    displayMedium = TextStyle(fontFamily = BeVietnamPro),
+    displaySmall = TextStyle(fontFamily = BeVietnamPro),
+    headlineLarge = TextStyle(fontFamily = BeVietnamPro),
+    headlineMedium = TextStyle(fontFamily = BeVietnamPro),
+    headlineSmall = TextStyle(fontFamily = BeVietnamPro),
+    titleLarge = TextStyle(fontFamily = BeVietnamPro),
+    titleMedium = TextStyle(fontFamily = BeVietnamPro),
+    titleSmall = TextStyle(fontFamily = BeVietnamPro),
+    bodyLarge = TextStyle(fontFamily = BeVietnamPro),
+    bodyMedium = TextStyle(fontFamily = BeVietnamPro),
+    bodySmall = TextStyle(fontFamily = BeVietnamPro),
+    labelLarge = TextStyle(fontFamily = BeVietnamPro),
+    labelMedium = TextStyle(fontFamily = BeVietnamPro),
+    labelSmall = TextStyle(fontFamily = BeVietnamPro)
+)
 @Composable
 fun SplitMouseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -51,7 +94,7 @@ fun SplitMouseTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = AppTypography,
         content = content
     )
 }
