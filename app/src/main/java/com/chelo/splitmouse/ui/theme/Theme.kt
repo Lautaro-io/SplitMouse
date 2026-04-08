@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.chelo.splitmouse.R
-import com.chelo.splitmouse.ui.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
