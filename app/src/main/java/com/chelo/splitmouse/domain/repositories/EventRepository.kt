@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.domain.repositories
 
 import com.chelo.splitmouse.domain.model.Event
+import kotlinx.coroutines.flow.Flow
 
 interface EventRepository {
 
@@ -11,6 +12,6 @@ interface EventRepository {
 
     suspend fun deleteEvent(event: Event)
 
-    suspend fun getAllEvents(): List<Event>
+    fun getAllEvents(): Flow<List<Event>>
 
 }

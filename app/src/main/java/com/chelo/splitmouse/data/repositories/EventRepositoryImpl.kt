@@ -5,6 +5,8 @@ import com.chelo.splitmouse.data.local.entities.toModel
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.domain.model.toEntity
 import com.chelo.splitmouse.domain.repositories.EventRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
     override suspend fun addEvent(event: Event) {
@@ -19,9 +21,11 @@ class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAllEvents(): List<Event> {
+    override fun getAllEvents(): Flow<List<Event>> {
         return eventDao.getEvents().map {
-            it.toModel()
+            it.map { event ->
+                event.toModel()
+            }
         }
     }
 
