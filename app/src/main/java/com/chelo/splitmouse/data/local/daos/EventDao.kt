@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.chelo.splitmouse.data.local.entities.EventEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -14,5 +15,5 @@ interface EventDao {
     suspend fun insertEvent(event: EventEntity)
 
     @Query("SELECT * FROM events")
-    suspend fun getEvents(): List<EventEntity>
+    fun getEvents(): Flow<List<EventEntity>>
 }
