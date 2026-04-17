@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "2.3.20"
 }
 
 android {
@@ -73,5 +74,7 @@ dependencies {
     implementation(libs.navigation.compose)
 
     implementation(libs.material.icons.extended)
+
+    implementation(libs.kotlinx.serialization.json)
 
 }
