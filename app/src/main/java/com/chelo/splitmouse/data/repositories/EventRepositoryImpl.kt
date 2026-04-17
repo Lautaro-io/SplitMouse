@@ -29,5 +29,9 @@ class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
         }
     }
 
+    override fun getEventById(id: Long): Flow<Event?> {
+        return eventDao.getEventById(id).map { it?.toModel() }
+    }
+
 
 }

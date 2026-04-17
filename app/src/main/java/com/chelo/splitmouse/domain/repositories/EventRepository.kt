@@ -14,4 +14,9 @@ interface EventRepository {
 
     fun getAllEvents(): Flow<List<Event>>
 
+
+    fun getEventById(id: Long): Flow<Event?>
 }
+
+
+

@@ -16,4 +16,10 @@ interface EventDao {
 
     @Query("SELECT * FROM events")
     fun getEvents(): Flow<List<EventEntity>>
+
+
+    @Query("SELECT * FROM events WHERE id = :id")
+    fun getEventById(id: Long): Flow<EventEntity?>
+
+
 }
