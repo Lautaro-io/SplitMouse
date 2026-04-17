@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.domain.repositories
 
 import com.chelo.splitmouse.domain.model.Participant
+import kotlinx.coroutines.flow.Flow
 
 interface ParticipantRepository {
 
@@ -8,6 +9,6 @@ interface ParticipantRepository {
 
     suspend fun deleteParticipant(participant: Participant)
 
-    suspend fun getParticipantsByEvent(eventId : Long): List<Participant>
+    fun getParticipantsByEvent(eventId : Long): Flow<List<Participant>>
 
 }

@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.chelo.splitmouse.data.local.entities.ParticipantEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
@@ -15,7 +16,7 @@ interface ParticipantDao {
     suspend fun insertParticipant(participant: ParticipantEntity)
 
     @Query("SELECT * FROM participants where eventId = :eventId")
-    suspend fun getParticipantsByEvent(eventId : Long): List<ParticipantEntity>
+    fun getParticipantsByEvent(eventId : Long): Flow<List<ParticipantEntity>>
 
 
 
