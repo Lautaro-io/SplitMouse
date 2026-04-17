@@ -25,7 +25,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.ShoppingBag
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -72,7 +74,7 @@ import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
 
     val state by viewModel.uiState.collectAsState()
-    val event = state.event
+    var showDialogParticipant by remember { mutableStateOf(false) }
     var showBottomModal by remember { mutableStateOf(false) }
 
     BackHandler {
@@ -110,7 +112,7 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
         },
         floatingActionButton = {
             Button(
-                onClick = {showBottomModal = true},
+                onClick = { showBottomModal = true },
                 modifier = Modifier.padding(16.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = VioletaFuerte,
@@ -129,26 +131,70 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
             }
         }
     ) { innerPadding ->
+        if (showDialogParticipant) {
+            AddParticipantDialog(
+                onDismiss = { showDialogParticipant = false },
+                onConfirm = {
+                    viewModel.addParticipant(Participant(0, it, state.event?.id!!))
+                    showDialogParticipant = false
+                })
+
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            event?.let {
-                ContentDetailHeader(event)
-                if (showBottomModal){
-                    AddExpenseBottomSheet(onDismiss = { showBottomModal = false })
-                }
+
+            ContentDetailHeader(
+                detailViewModel = viewModel,
+                onAddParticipantClick = { showDialogParticipant = true })
+            if (showBottomModal) {
+                AddExpenseBottomSheet(onDismiss = { showBottomModal = false }, state.participants)
             }
+
         }
 
     }
 }
 
+@Composable
+fun AddParticipantDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    AlertDialog(
+        containerColor = Color.White,
+        onDismissRequest = onDismiss,
+        title = { Text("Agregar Participante", fontWeight = FontWeight.Bold) },
+        text = {
+            PurpleTextField(
+                text = "Nombre",
+                placeholder = "Nombre del participante",
+                value = name,
+                onValueChange = { name = it },
+                leadingIcon = Icons.Default.PersonAdd
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(name) }) {
+                Text("Agregar")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = { onConfirm(name) }) {
+                Text("Cancelar", color = Color.Red)
+            }
+        }
+    )
+
+}
+
 
 @Composable
-fun ContentDetailHeader(event: Event) {
+fun ContentDetailHeader(detailViewModel: EventDetailViewModel, onAddParticipantClick: () -> Unit) {
+    val state by detailViewModel.uiState.collectAsState()
+    val event = state.event ?: return
+    val participants = state.participants
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -192,7 +238,7 @@ fun ContentDetailHeader(event: Event) {
         }
         CardDescriptionDetail(event.description)
         CardTotalSpent(event)
-        ParticipantPanel()
+        ParticipantPanel(participants, onAddParticipantClick = onAddParticipantClick)
 
         Text(
             "Gastos",
@@ -320,19 +366,10 @@ fun ParticipantsTip(text: String = "5\nParticipants") {
 
 }
 
-val participantList = listOf(
-    Participant(id = 1, name = "Lucas (Vos)", eventId = 1),
-    Participant(id = 2, name = "Santi", eventId = 1),
-    Participant(id = 3, name = "Zaira", eventId = 1),
-    Participant(id = 4, name = "Joaquín", eventId = 1),
-    Participant(id = 5, name = "Matias", eventId = 1),
-    Participant(id = 6, name = "Ivan", eventId = 1)
-)
 
-@Preview
 @Composable
 fun ParticipantPanel(
-    participants: List<Participant> = participantList,
+    participants: List<Participant>,
     onAddParticipantClick: () -> Unit = {},
     onParticipantClick: () -> Unit = {},
 ) {
@@ -364,7 +401,7 @@ fun ParticipantPanel(
 
             }
         }
-        LazyRow() {
+        LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
             item {
                 InputChip(
                     selected = false,
@@ -404,7 +441,11 @@ fun ParticipantPanel(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExpenseBottomSheet(onDismiss: () -> Unit, participants : List<Participant> = participantList, onParticipantClick: () -> Unit = {}) {
+fun AddExpenseBottomSheet(
+    onDismiss: () -> Unit,
+    participants: List<Participant>,
+    onParticipantClick: () -> Unit = {},
+) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
