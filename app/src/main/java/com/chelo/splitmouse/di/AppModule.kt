@@ -9,6 +9,7 @@ import com.chelo.splitmouse.domain.repositories.EventRepository
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import com.chelo.splitmouse.domain.repositories.ParticipantRepository
 import com.chelo.splitmouse.viewmodel.AddEventViewModel
+import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 import com.chelo.splitmouse.viewmodel.MainViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -52,6 +53,10 @@ val appModule = module {
 
     viewModel {
         AddEventViewModel(get())
+    }
+
+    viewModel { (eventId: Long) ->
+        EventDetailViewModel(eventId, get())
     }
 
 
