@@ -1,4 +1,4 @@
-package com.chelo.splitmouse.screens
+package com.chelo.splitmouse.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.ArrowCircleRight
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Preview
@@ -57,7 +56,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
@@ -73,9 +71,10 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun MainScreen(navController: NavController? = null, viewmodel: MainViewModel = koinViewModel()) {
+fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
 
     Scaffold(
+
         topBar = {
             Row(
                 modifier = Modifier
@@ -110,7 +109,9 @@ fun MainScreen(navController: NavController? = null, viewmodel: MainViewModel = 
         MainContent(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(top = 32.dp), viewmodel
+                .padding( 16.dp),
+            eventViewModel = viewmodel,
+            navigateToDetail
         )
 
 
@@ -120,7 +121,11 @@ fun MainScreen(navController: NavController? = null, viewmodel: MainViewModel = 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent(modifier: Modifier = Modifier, eventViewModel: MainViewModel) {
+fun MainContent(
+    modifier: Modifier = Modifier,
+    eventViewModel: MainViewModel,
+    navigateToDetail: (Long) -> Unit,
+) {
     val state by eventViewModel.uiState.collectAsState()
     val events = state.events
     var showBottomModal by remember { mutableStateOf(false) }
@@ -165,7 +170,7 @@ fun MainContent(modifier: Modifier = Modifier, eventViewModel: MainViewModel) {
                 }
             }
             items(events.reversed().take(itemsCount)) {
-                EventCard(it)
+                EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
             }
         }
         if (showBottomModal) {
@@ -183,7 +188,8 @@ fun PurpleTextField(
     value: String = "",
     onValueChange: (String) -> Unit = {},
     readOnly: Boolean = false,
-    icon: ImageVector? = Icons.Default.ArrowCircleRight,
+    trailingIcon: ImageVector? = null,
+    leadingIcon: ImageVector? = null,
     showDatePicker: () -> Unit = {},
 ) {
     Column(
@@ -229,14 +235,24 @@ fun PurpleTextField(
 
                 ),
                 trailingIcon = {
-                    icon?.let {
+                    trailingIcon?.let {
                         Icon(
-                            icon,
+                            trailingIcon,
                             contentDescription = "",
                             modifier = Modifier.padding(end = 16.dp),
-                            tint = Purple40,
+                            tint = VioletaFuerte,
                         )
 
+                    }
+                },
+                leadingIcon = {
+                    leadingIcon?.let {
+                        Icon(
+                            leadingIcon,
+                            contentDescription = "",
+                            modifier = Modifier.padding(end = 16.dp),
+                            tint = VioletaFuerte
+                        )
                     }
                 })
             if (readOnly) {
@@ -283,11 +299,12 @@ fun DatePickerField(onDateSelected: (String) -> Unit, onDismiss: () -> Unit) {
 
 
 @Composable
-fun EventCard(event: Event) {
+fun EventCard(event: Event, onEventClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onEventClick() },
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -385,7 +402,7 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
                 placeholder = "Asado con amigos",
                 value = state.name,
                 onValueChange = { viewmodel.updateFormState(FieldType.NAME, it) },
-                icon = Icons.Default.Preview
+                trailingIcon = Icons.Default.Preview
             )
             PurpleTextField(
                 text = "Cuando es?",
@@ -393,7 +410,7 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
                 value = state.date,
                 readOnly = true,
                 onValueChange = { },
-                icon = Icons.Default.CalendarMonth,
+                trailingIcon = Icons.Default.CalendarMonth,
                 showDatePicker = { showDatePicker = true }
             )
             if (showDatePicker) {
@@ -409,7 +426,7 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
                 placeholder = "Describe algo del evento",
                 value = state.description ?: "",
                 onValueChange = { viewmodel.updateFormState(FieldType.DESCRIPTION, it) },
-                icon = null
+                trailingIcon = null
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -455,7 +472,7 @@ fun CardAddEvent(onButtonClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 14.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
             containerColor = Pink40,
@@ -500,8 +517,8 @@ fun CardAddEvent(onButtonClick: () -> Unit) {
                     )
                     Text(
                         "Crear Nuevo Evento",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
                     )
                 }
             }
