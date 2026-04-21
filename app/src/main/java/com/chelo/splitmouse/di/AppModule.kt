@@ -8,6 +8,7 @@ import com.chelo.splitmouse.data.repositories.ParticipantRepositoryImpl
 import com.chelo.splitmouse.domain.repositories.EventRepository
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import com.chelo.splitmouse.domain.repositories.ParticipantRepository
+import com.chelo.splitmouse.domain.usecases.GetEventSettlementUseCase
 import com.chelo.splitmouse.viewmodel.AddEventViewModel
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 import com.chelo.splitmouse.viewmodel.MainViewModel
@@ -45,6 +46,7 @@ val appModule = module {
         ExpenseRepositoryImpl(get())
     }
 
+    factory { GetEventSettlementUseCase() }
 
 
     viewModel {
@@ -56,7 +58,7 @@ val appModule = module {
     }
 
     viewModel { (eventId: Long) ->
-        EventDetailViewModel(eventId, get() , get(), get())
+        EventDetailViewModel(eventId, get() , get(), get(), get())
     }
 
 
