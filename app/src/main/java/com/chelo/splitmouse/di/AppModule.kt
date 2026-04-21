@@ -56,7 +56,7 @@ val appModule = module {
     }
 
     viewModel { (eventId: Long) ->
-        EventDetailViewModel(eventId, get() , get())
+        EventDetailViewModel(eventId, get() , get(), get())
     }
 
 
