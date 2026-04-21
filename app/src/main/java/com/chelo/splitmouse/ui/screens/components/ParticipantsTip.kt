@@ -13,18 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
-@Preview
 @Composable
-fun ParticipantsTip(text: String = "5\nParticipants") {
+fun ParticipantsTip(text: String ) {
     Surface(
         modifier = Modifier
-            .padding(16.dp),
+            .padding(16.dp)
+            ,
         shape = RoundedCornerShape(32.dp),
         shadowElevation = 2.dp,
         border = BorderStroke(1.dp, Purple40),
@@ -35,7 +34,13 @@ fun ParticipantsTip(text: String = "5\nParticipants") {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(Icons.Default.Group, contentDescription = "", tint = Color.White)
-            Text(text, color = Color.White, fontSize = 12.sp, modifier = Modifier.padding(16.dp))
+            Text(
+                text,
+                color = Color.White,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(16.dp),
+                maxLines = 1
+            )
         }
     }
 
