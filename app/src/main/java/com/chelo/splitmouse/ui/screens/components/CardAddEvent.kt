@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.ui.screens.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,13 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,19 +28,22 @@ import com.chelo.splitmouse.ui.theme.Purple40
 
 @Composable
 fun CardAddEvent(onButtonClick: () -> Unit) {
-    Card(
+    val bgColor = Brush.horizontalGradient(
+        0.7f to Color.Transparent,
+        1.0f to Pink40
+    )
+    Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 14.dp),
+            .padding(horizontal = 14.dp)
+            ,
         shape = RoundedCornerShape(24.dp),
-        elevation = CardDefaults.cardElevation(4.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Pink40,
-            contentColor = Color.Black
-        )
+        tonalElevation = 0.1.dp,
+
+
     ) {
         Column(
-            modifier = Modifier.padding(32.dp),
+            modifier = Modifier.background(bgColor).padding(32.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
