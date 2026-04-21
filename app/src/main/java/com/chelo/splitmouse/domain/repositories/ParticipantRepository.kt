@@ -7,7 +7,7 @@ interface ParticipantRepository {
 
     suspend fun addParticipant( participant: Participant)
 
-    suspend fun deleteParticipant(participant: Participant)
+    suspend fun deleteParticipant(participantId : Long)
 
     fun getParticipantsByEvent(eventId : Long): Flow<List<Participant>>
 

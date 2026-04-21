@@ -19,6 +19,9 @@ interface ParticipantDao {
     fun getParticipantsByEvent(eventId : Long): Flow<List<ParticipantEntity>>
 
 
+    @Query("DELETE FROM participants WHERE id = :participantId")
+    suspend fun deleteParticipantById(participantId : Long)
+
 
 
 
