@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Event
@@ -41,7 +42,7 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
                 }
                 onSuccess()
 
-            }catch (e : Exception){}
+            }catch (e : Exception){ }
         }
 
     }
