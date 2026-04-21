@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -26,20 +26,29 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
+import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
 import com.chelo.splitmouse.ui.screens.components.EventCard
 import com.chelo.splitmouse.ui.theme.BlackPurple
+import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
+import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
+    val bgColor = Brush.verticalGradient(
+        0.7f to Color.Transparent,
+        1.0f to Pink40
+    )
 
     Scaffold(
 
@@ -52,30 +61,28 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(
-                    imageVector = Icons.Default.SupervisedUserCircle,
-                    contentDescription = "",
-                    modifier = Modifier.size(32.dp)
-                )
+
                 Text(
-                    "SplitMouse",
-                    fontSize = 38.sp,
-                    fontStyle = FontStyle.Italic,
-                    color = Purple40,
-                    fontWeight = FontWeight.Bold
+                    "Splitmouse",
+                    fontSize = 32.sp,
+                    color = VioletaFuerte,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = FontFamily.SansSerif
                 )
                 Icon(
                     imageVector = Icons.Default.Notifications,
                     contentDescription = "",
-                    tint = Purple40,
+                    tint = VioletaFuerte,
                     modifier = Modifier.size(32.dp)
                 )
             }
         },
 
+
         ) { innerPadding ->
         MainContent(
             modifier = Modifier
+                .background(bgColor)
                 .padding(innerPadding)
                 .padding( 16.dp),
             eventViewModel = viewmodel,
@@ -106,41 +113,46 @@ fun MainContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (state.events.isEmpty()){
+            EmptyEventContent(onButtonClick = { showBottomModal = true })
+        }else{
 
-        LazyColumn {
-            item {
-                CardAddEvent(onButtonClick = { showBottomModal = true })
-            }
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 32.dp, horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        "Eventos Activos",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 28.sp,
-                        color = BlackPurple
-                    )
-                    TextButton(onClick = { itemsCount = events.size }) {
+            LazyColumn {
+                item {
+                    CardAddEvent(onButtonClick = { showBottomModal = true })
+                }
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 32.dp, horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
-                            text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 18.sp,
-                            color = Purple40
+                            "Eventos Activos",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 28.sp,
+                            color = BlackPurple
                         )
+                        TextButton(onClick = { itemsCount = events.size }) {
+                            Text(
+                                text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 18.sp,
+                                color = Purple40
+                            )
+
+                        }
 
                     }
-
+                }
+                items(events.reversed().take(itemsCount)) {
+                    EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
                 }
             }
-            items(events.reversed().take(itemsCount)) {
-                EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
-            }
         }
+
         if (showBottomModal) {
             BottomForm(onDismiss = { showBottomModal = false })
         }
