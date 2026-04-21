@@ -3,12 +3,14 @@ package com.chelo.splitmouse.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chelo.splitmouse.domain.model.Debt
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.domain.repositories.EventRepository
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import com.chelo.splitmouse.domain.repositories.ParticipantRepository
+import com.chelo.splitmouse.domain.usecases.GetEventSettlementUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -21,6 +23,7 @@ class EventDetailViewModel(
     val eventRepository: EventRepository,
     val participantRepository: ParticipantRepository,
     val expensesRepository: ExpenseRepository,
+    val getEventSettlementUseCase: GetEventSettlementUseCase,
 ) : ViewModel() {
 
 
@@ -33,11 +36,12 @@ class EventDetailViewModel(
 
     val uiState: StateFlow<EventDetailState> =
         combine(event, participants, expenses) { event, participants, expenses ->
-            Log.i("CHELO", expenses.toString())
+            val calculatedDebts = getEventSettlementUseCase(participants, expenses)
             EventDetailState(
                 event,
                 participants = participants,
                 expenses = expenses,
+                debts = calculatedDebts,
                 isLoading = false
             )
         }.catch {
@@ -61,15 +65,11 @@ class EventDetailViewModel(
 
     fun addExpense(amount: Double, description: String, playerId: Long) {
         viewModelScope.launch {
-            if (listOf(
-                    amount,
-                    description,
-                    playerId
-                ).any() { false }
-            ) throw Exception("Invalid data")
+            if (amount <= 0 || description.isEmpty()) throw Exception("Invalid data")
             try {
                 val expense = Expense(0, amount, description, eventId, playerId)
                 Log.i("CHELO", expense.toString())
+                Log.i("CHELO", uiState.value.debts.toString())
                 expensesRepository.addExpense(expense)
                 val event = uiState.value.event
                 eventRepository.updateEvent(
@@ -116,6 +116,7 @@ data class EventDetailState(
     val isLoading: Boolean = true,
     val isError: Boolean = false,
     val errorMessage: String? = null,
+    val debts: List<Debt> = emptyList(),
     val participants: List<Participant> = emptyList(),
     val expenses: List<Expense> = emptyList(),
 )
