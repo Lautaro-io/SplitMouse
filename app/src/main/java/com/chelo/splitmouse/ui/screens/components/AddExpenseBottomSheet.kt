@@ -22,6 +22,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,11 +45,15 @@ import com.chelo.splitmouse.ui.theme.VioletaFuerte
 fun AddExpenseBottomSheet(
     onDismiss: () -> Unit,
     participants: List<Participant>,
-    onParticipantClick: () -> Unit = {},
+    onAddExpenseClick: (Double, String, Long) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+
+    var participantId by remember { mutableLongStateOf(0L) }
+    var amount by remember { mutableDoubleStateOf(0.0) }
+    var nameExpense by remember { mutableStateOf("") }
 
 //    val state by viewmodel.formState.collectAsState()
 
@@ -91,7 +101,7 @@ fun AddExpenseBottomSheet(
                     InputChip(
                         selected = false,
                         modifier = Modifier.padding(horizontal = 4.dp),
-                        onClick = onParticipantClick,
+                        onClick = { participantId = participant.id },
                         label = { Text(participant.name) },
                         shape = RoundedCornerShape(32.dp),
                         colors = inputChipColors(
@@ -104,16 +114,17 @@ fun AddExpenseBottomSheet(
             PurpleTextField(
                 text = "Nombre del Producto",
                 placeholder = "Coca Cola",
-                value = "",
-                onValueChange = { },
+                value = nameExpense,
+                onValueChange = { nameExpense = it },
                 leadingIcon = Icons.Default.ShoppingBag
             )
             PurpleTextField(
                 text = "Valor",
                 placeholder = "$5.000",
-                value = "",
-                onValueChange = { },
-                leadingIcon = Icons.Default.AttachMoney
+                value = amount.toInt().toString(),
+                onValueChange = { amount = it.toDouble() },
+                leadingIcon = Icons.Default.AttachMoney,
+                isNumber = true
             )
 
 
@@ -122,6 +133,7 @@ fun AddExpenseBottomSheet(
 
             Button(
                 onClick = {
+                    onAddExpenseClick(amount,nameExpense, participantId)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
