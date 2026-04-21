@@ -23,7 +23,7 @@ fun AddParticipantDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
         text = {
             PurpleTextField(
                 text = "Nombre",
-                placeholder = "Nombre del participante",
+                placeholder = "Ej: Juan Perez",
                 value = name,
                 onValueChange = { name = it },
                 leadingIcon = Icons.Default.PersonAdd
