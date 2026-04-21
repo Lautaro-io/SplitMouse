@@ -108,7 +108,8 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
 
             Button(
                 onClick = {
-                    viewmodel.addEvent(onSuccess = {
+                    viewmodel.addEvent(
+                        onSuccess = {
                         onDismiss()
                     })
                 },
