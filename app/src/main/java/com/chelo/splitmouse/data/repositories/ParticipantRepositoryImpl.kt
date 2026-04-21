@@ -15,8 +15,8 @@ class ParticipantRepositoryImpl(val participantDao: ParticipantDao) : Participan
         participantDao.insertParticipant(participant.toEntity())
     }
 
-    override suspend fun deleteParticipant(participant: Participant) {
-        TODO("Not yet implemented")
+    override suspend fun deleteParticipant(participantId : Long) {
+        participantDao.deleteParticipantById(participantId)
     }
 
     override fun getParticipantsByEvent(eventId: Long): Flow<List<Participant>> {
