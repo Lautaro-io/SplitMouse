@@ -1,6 +1,5 @@
 package com.chelo.splitmouse.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Event
