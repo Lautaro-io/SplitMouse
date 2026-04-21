@@ -2,13 +2,18 @@ package com.chelo.splitmouse.ui.screens.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.ShoppingBag
@@ -33,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.domain.model.Participant
@@ -40,7 +46,7 @@ import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AddExpenseBottomSheet(
     onDismiss: () -> Unit,
@@ -54,8 +60,8 @@ fun AddExpenseBottomSheet(
     var participantId by remember { mutableLongStateOf(0L) }
     var amount by remember { mutableDoubleStateOf(0.0) }
     var nameExpense by remember { mutableStateOf("") }
+    var selectedParticipantId by remember { mutableStateOf<Long?>(null) }
 
-//    val state by viewmodel.formState.collectAsState()
 
 
     ModalBottomSheet(
@@ -65,7 +71,10 @@ fun AddExpenseBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp, vertical = 16.dp),
+                .padding(horizontal = 32.dp, vertical = 16.dp)
+                .imePadding()
+                .imeNestedScroll()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -96,15 +105,37 @@ fun AddExpenseBottomSheet(
                 textAlign = TextAlign.Start
             )
             LazyRow() {
+                if (participants.isEmpty()) {
+                    item {
+                        Text(
+                            "Debe agregar al menos un participante.",
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.Red,
+                            fontSize = 18.sp,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 32.dp),
+                            textAlign = TextAlign.Center,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
 
                 items(participants) { participant ->
+                    selectedParticipantId = participants[0].id
+                    val isSelected = selectedParticipantId == participant.id
                     InputChip(
-                        selected = false,
+                        selected = isSelected,
                         modifier = Modifier.padding(horizontal = 4.dp),
-                        onClick = { participantId = participant.id },
+                        onClick = {
+                            selectedParticipantId = if (isSelected) null else participant.id
+                            participantId = selectedParticipantId ?: 0L
+                        },
                         label = { Text(participant.name) },
                         shape = RoundedCornerShape(32.dp),
                         colors = inputChipColors(
+                            selectedContainerColor = VioletaFuerte,
+                            selectedLabelColor = Color.White,
                             containerColor = Pink40,
                             labelColor = Purple40
                         )
@@ -133,8 +164,9 @@ fun AddExpenseBottomSheet(
 
             Button(
                 onClick = {
-                    onAddExpenseClick(amount,nameExpense, participantId)
+                    onAddExpenseClick(amount, nameExpense, participantId)
                 },
+                enabled = amount > 0 && nameExpense.isNotBlank() && selectedParticipantId != null,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
