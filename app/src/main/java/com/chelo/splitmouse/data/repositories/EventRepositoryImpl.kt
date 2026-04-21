@@ -14,7 +14,7 @@ class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
     }
 
     override suspend fun updateEvent(event: Event) {
-//        eventDao.(event.toEntity())
+        eventDao.updateEvent(event.toEntity())
     }
 
     override suspend fun deleteEvent(event: Event) {
