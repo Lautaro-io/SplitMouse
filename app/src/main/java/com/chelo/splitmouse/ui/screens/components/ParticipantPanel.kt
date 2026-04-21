@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.ui.screens.components
 
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,11 +16,15 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.InputChipDefaults.inputChipColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,8 +37,10 @@ import com.chelo.splitmouse.ui.theme.VioletaFuerte
 fun ParticipantPanel(
     participants: List<Participant>,
     onAddParticipantClick: () -> Unit = {},
-    onParticipantClick: () -> Unit = {},
+    onLongPress: (Long) -> Unit,
 ) {
+    val haptic = LocalHapticFeedback.current
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,7 +69,11 @@ fun ParticipantPanel(
 
             }
         }
-        LazyRow(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             item {
                 InputChip(
                     selected = false,
@@ -83,17 +94,26 @@ fun ParticipantPanel(
                 )
             }
             items(participants) { participant ->
-                InputChip(
-                    selected = false,
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    onClick = onParticipantClick,
-                    label = { Text(participant.name) },
+                Surface(
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .combinedClickable(
+                            onClick = { /* ... */ },
+                            onLongClick = {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                onLongPress(participant.id)
+                            }
+                        ),
                     shape = RoundedCornerShape(32.dp),
-                    colors = inputChipColors(
-                        containerColor = Pink40,
-                        labelColor = Purple40
+                    color = Pink40
+                ) {
+                    Text(
+                        text = participant.name,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        color = Purple40,
+                        style = MaterialTheme.typography.labelLarge
                     )
-                )
+                }
             }
         }
     }
