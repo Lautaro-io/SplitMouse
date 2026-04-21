@@ -49,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
     val bgColor = Brush.verticalGradient(
-        0.7f to Color.Transparent,
+        0.5f to Color.Transparent,
         1.0f to Pink40
     )
 
