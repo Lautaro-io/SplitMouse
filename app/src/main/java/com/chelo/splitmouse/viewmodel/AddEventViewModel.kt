@@ -28,6 +28,7 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
         val event = _formState.value
         viewModelScope.launch {
             try {
+                if (!validateForm()) throw Exception("Invalid data")
                 repo.addEvent(
                     Event(
                         id = 0,
@@ -55,6 +56,12 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
                 FieldType.DATE -> it.copy(date = value)
             }
         }
+    }
+    fun validateForm(): Boolean {
+        val validName = _formState.value.name.isNotBlank()
+        val validDate = _formState.value.date.isNotBlank()
+        return validDate && validName
+
     }
 
 
