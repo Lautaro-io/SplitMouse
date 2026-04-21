@@ -27,13 +27,8 @@ import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Composable
 fun CardTotalSpent(
-    event: Event = Event(
-        id = 1L,
-        name = "Asado en lo de Juan",
-        date = "15 Abr 2026, 21:00",
-        description = "Asado con los chicos del secundario. Traer bebidas y buen humor. Se divide todo al final.",
-        totalAmount = 45500.0
-    ),
+    event: Event ,
+    participantSize: Int = 0
 ) {
     val color = Brush.verticalGradient(listOf(Purple40, BlackPurple))
     Card(
@@ -82,7 +77,7 @@ fun CardTotalSpent(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    ParticipantsTip()
+                    ParticipantsTip(participantSize.toString())
                     Text(
                         "REPARTIENDO EQUITATIVAMENTE",
                         fontWeight = FontWeight.Bold,
