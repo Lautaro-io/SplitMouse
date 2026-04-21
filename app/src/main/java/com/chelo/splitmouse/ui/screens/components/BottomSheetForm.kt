@@ -2,10 +2,15 @@ package com.chelo.splitmouse.ui.screens.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Preview
@@ -35,7 +40,7 @@ import com.chelo.splitmouse.viewmodel.AddEventViewModel
 import com.chelo.splitmouse.viewmodel.FieldType
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewModel()) {
     val sheetState = rememberModalBottomSheetState(
@@ -53,7 +58,10 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 32.dp, vertical = 16.dp),
+                .padding(horizontal = 32.dp, vertical = 16.dp)
+                .imePadding()
+                .imeNestedScroll()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -113,6 +121,7 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
                         onDismiss()
                     })
                 },
+                enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
