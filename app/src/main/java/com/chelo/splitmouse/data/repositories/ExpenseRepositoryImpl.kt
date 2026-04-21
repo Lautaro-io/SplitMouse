@@ -5,6 +5,8 @@ import com.chelo.splitmouse.data.local.entities.toModel
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.toEntity
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseRepository {
 
@@ -13,11 +15,11 @@ class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseReposit
         expenseDao.insertExpense(expense.toEntity())
     }
 
-    override suspend fun getExpensesByEvent(eventId: Long): List<Expense> {
-        return expenseDao.getExpenses().map {
-            it.toModel()
-        }.filter {
-            it.eventId == eventId
+    override fun getExpensesByEvent(eventId: Long): Flow<List<Expense>> {
+        return expenseDao.getExpensesByEvent(eventId).map { list ->
+            list.map {
+                it.toModel()
+            }
         }
 
     }
