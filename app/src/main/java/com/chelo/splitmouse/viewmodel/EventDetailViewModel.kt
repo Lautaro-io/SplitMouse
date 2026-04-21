@@ -1,10 +1,13 @@
 package com.chelo.splitmouse.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Event
+import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.domain.repositories.EventRepository
+import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import com.chelo.splitmouse.domain.repositories.ParticipantRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -15,8 +18,9 @@ import kotlinx.coroutines.launch
 
 class EventDetailViewModel(
     val eventId: Long,
-    eventRepository: EventRepository,
+    val eventRepository: EventRepository,
     val participantRepository: ParticipantRepository,
+    val expensesRepository: ExpenseRepository,
 ) : ViewModel() {
 
 
@@ -24,27 +28,72 @@ class EventDetailViewModel(
 
     private val participants = participantRepository.getParticipantsByEvent(eventId)
 
-
-    val uiState: StateFlow<EventDetailState> = combine(event, participants) { event, participants ->
-        EventDetailState(event, participants = participants, isLoading = false)
-    }.catch {
-        emit(EventDetailState(event = null, isError = true, errorMessage = it.message))
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(4000),
-        EventDetailState(event = null, isLoading = true)
-    )
+    private val expenses = expensesRepository.getExpensesByEvent(eventId)
 
 
-    fun addParticipant(participant: Participant){
+    val uiState: StateFlow<EventDetailState> =
+        combine(event, participants, expenses) { event, participants, expenses ->
+            Log.i("CHELO", expenses.toString())
+            EventDetailState(
+                event,
+                participants = participants,
+                expenses = expenses,
+                isLoading = false
+            )
+        }.catch {
+            emit(EventDetailState(event = null, isError = true, errorMessage = it.message))
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(4000),
+            EventDetailState(event = null, isLoading = true)
+        )
+
+
+    fun addParticipant(name: String) {
         viewModelScope.launch {
             try {
-                participantRepository.addParticipant(participant)
-            }catch (e : Exception){
+                participantRepository.addParticipant(Participant(0, name, eventId))
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
+
+    fun addExpense(amount: Double, description: String, playerId: Long) {
+        viewModelScope.launch {
+            if (listOf(
+                    amount,
+                    description,
+                    playerId
+                ).any() { false }
+            ) throw Exception("Invalid data")
+            try {
+                val expense = Expense(0, amount, description, eventId, playerId)
+                Log.i("CHELO", expense.toString())
+                expensesRepository.addExpense(expense)
+                val event = uiState.value.event
+                eventRepository.updateEvent(
+                    event?.copy(totalAmount = event.totalAmount + amount) ?: return@launch
+                )
+
+            } catch (e: Exception) {
+                Log.i("CHELO", e.message.toString())
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun deleteParticipant(participantId: Long) {
+        viewModelScope.launch {
+            try {
+                participantRepository.deleteParticipant(participantId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.i("CHELO", e.message.toString())
+            }
+        }
+    }
+
 
 //    val uiState: StateFlow<EventDetailState> =
 //        eventRepository.getEventById(eventId).map { event ->
@@ -68,4 +117,5 @@ data class EventDetailState(
     val isError: Boolean = false,
     val errorMessage: String? = null,
     val participants: List<Participant> = emptyList(),
+    val expenses: List<Expense> = emptyList(),
 )
