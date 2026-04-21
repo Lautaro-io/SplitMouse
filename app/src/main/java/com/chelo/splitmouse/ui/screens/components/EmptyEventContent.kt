@@ -112,7 +112,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                 .fillMaxWidth()
         ) {
             Button(
-                onClick = { /*TODO*/ },
+                onClick = onButtonClick,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
                 modifier = Modifier.fillMaxWidth()
             ) {
