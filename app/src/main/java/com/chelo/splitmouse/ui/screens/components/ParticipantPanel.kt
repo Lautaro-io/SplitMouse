@@ -98,7 +98,7 @@ fun ParticipantPanel(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .combinedClickable(
-                            onClick = { /* ... */ },
+                            onClick = { },
                             onLongClick = {
                                 haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                                 onLongPress(participant.id)
