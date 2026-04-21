@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization") version "2.3.20"
 }
 
 android {
@@ -58,6 +59,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     // 🔹 Koin
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     // 🔹 Room
     implementation(libs.room.runtime)
@@ -70,4 +72,9 @@ dependencies {
     // 🔹 Coroutines
     implementation(libs.coroutines.android)
     implementation(libs.navigation.compose)
+
+    implementation(libs.material.icons.extended)
+
+    implementation(libs.kotlinx.serialization.json)
+
 }
