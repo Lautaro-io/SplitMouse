@@ -13,7 +13,7 @@ import com.chelo.splitmouse.data.local.entities.ParticipantEntity
 
 @Database(
     entities = [ExpenseEntity::class, ParticipantEntity::class , EventEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
