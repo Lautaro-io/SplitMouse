@@ -2,8 +2,10 @@ package com.chelo.splitmouse.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -109,48 +112,57 @@ fun MainContent(
     var itemsCount by remember { mutableIntStateOf(3) }
 
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.events.isEmpty()){
-            EmptyEventContent(onButtonClick = { showBottomModal = true })
+        if (state.isLoading){
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                CircularProgressIndicator()
+            }
         }else{
+            when  {
+                state.events.isEmpty() -> EmptyEventContent(onButtonClick = { showBottomModal = true })
+                else -> {
 
-            LazyColumn {
-                item {
-                    CardAddEvent(onButtonClick = { showBottomModal = true })
-                }
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 32.dp, horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            "Eventos Activos",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 28.sp,
-                            color = BlackPurple
-                        )
-                        TextButton(onClick = { itemsCount = events.size }) {
-                            Text(
-                                text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 18.sp,
-                                color = Purple40
-                            )
-
+                    LazyColumn {
+                        item {
+                            CardAddEvent(onButtonClick = { showBottomModal = true })
                         }
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 32.dp, horizontal = 16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    "Eventos Activos",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 28.sp,
+                                    color = BlackPurple
+                                )
+                                TextButton(onClick = { itemsCount = events.size }) {
+                                    Text(
+                                        text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
+                                        fontWeight = FontWeight.SemiBold,
+                                        fontSize = 18.sp,
+                                        color = Purple40
+                                    )
 
+                                }
+
+                            }
+                        }
+                        items(events.reversed().take(itemsCount)) {
+                            EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+                        }
                     }
                 }
-                items(events.reversed().take(itemsCount)) {
-                    EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
-                }
-            }
+        }
+
+
         }
 
         if (showBottomModal) {
