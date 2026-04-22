@@ -43,64 +43,70 @@ fun ContentDetailHeader(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column() {
-            Text(
-                event.name,
-                color = BlackPurple,
-                fontSize = 42.sp,
-                fontWeight = FontWeight.ExtraBold,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    Icons.Default.CalendarMonth,
-                    contentDescription = "Fecha del evento",
-                    tint = VioletaFuerte
-                )
-                Spacer(Modifier.width(4.dp))
+        LazyColumn() {
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(
+                        event.name,
+                        color = BlackPurple,
+                        fontSize = 42.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.CalendarMonth,
+                            contentDescription = "Fecha del evento",
+                            tint = VioletaFuerte
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            event.date,
+                            color = VioletaFuerte,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start
+                        )
+
+                    }
+                    CardDescriptionDetail(event.description)
+                    CardTotalSpent(event , participants.size)
+                    ParticipantPanel(
+                        participants,
+                        onAddParticipantClick = onAddParticipantClick,
+                        onLongPress = { onDeleteParticipant(it) })
+
+
+                }
+
                 Text(
-                    event.date,
+                    "Gastos",
                     color = VioletaFuerte,
-                    fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
 
+
             }
-
-        }
-        CardDescriptionDetail(event.description)
-        CardTotalSpent(event , participants.size)
-        ParticipantPanel(
-            participants,
-            onAddParticipantClick = onAddParticipantClick,
-            onLongPress = { onDeleteParticipant(it) })
-
-        Text(
-            "Gastos",
-            color = VioletaFuerte,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 20.sp,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start
-        )
-        LazyColumn() {
             items(state.expenses) { expense ->
                 CardExpense(
                     expense = expense,
                     name = participants.find { it.id == expense.payerId }?.name ?: ""
                 )
             }
-
         }
+
+
 
     }
 
