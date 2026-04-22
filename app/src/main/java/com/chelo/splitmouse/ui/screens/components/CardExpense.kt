@@ -27,6 +27,7 @@ import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
+import com.chelo.splitmouse.ui.toArgentineCurrency
 import kotlin.math.roundToInt
 
 
@@ -68,7 +69,7 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
                 PersonalizedText("Paid by $name", listOf(name), 16)
             }
             Column(modifier = Modifier.weight(1f).padding(vertical = 8.dp), horizontalAlignment = Alignment.End) {
-                Text("$${expense.amount.roundToInt()}", fontWeight = FontWeight.ExtraBold , fontSize = 24.sp)
+                Text(expense.amount.toArgentineCurrency(), fontWeight = FontWeight.ExtraBold , fontSize = 24.sp)
             }
 
         }
