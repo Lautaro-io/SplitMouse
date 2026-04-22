@@ -42,7 +42,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewModel()) {
+fun BottomForm(
+    onDismiss: () -> Unit,
+    viewmodel: AddEventViewModel = koinViewModel(),
+    navigate: () -> Unit = {},
+) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -118,8 +122,9 @@ fun BottomForm(onDismiss: () -> Unit, viewmodel: AddEventViewModel = koinViewMod
                 onClick = {
                     viewmodel.addEvent(
                         onSuccess = {
-                        onDismiss()
-                    })
+                            onDismiss()
+                        })
+                    navigate()
                 },
                 enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
