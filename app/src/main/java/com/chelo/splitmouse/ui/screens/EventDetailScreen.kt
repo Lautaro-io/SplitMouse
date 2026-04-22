@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCard
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.ui.screens.components.AddExpenseBottomSheet
 import com.chelo.splitmouse.ui.screens.components.AddParticipantDialog
 import com.chelo.splitmouse.ui.screens.components.ContentDetailHeader
+import com.chelo.splitmouse.ui.screens.components.SettlementContent
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
@@ -57,6 +59,7 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
         0.7f to Color.Transparent,
         1.0f to Pink40
     )
+    var goToSettlement by remember { mutableStateOf(false) }
     BackHandler {
         onBack()
     }
@@ -91,23 +94,43 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
             }
         },
         floatingActionButton = {
-            Button(
-                onClick = { showBottomModal = true },
-                modifier = Modifier.padding(16.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = VioletaFuerte,
-                    contentColor = Color.White
-                )
-            ) {
-                Row(
-                    modifier = Modifier.padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+            Column() {
+                Button(
+                    onClick = { goToSettlement = true },
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
+                        contentColor = Color.White
+                    )
                 ) {
-                    Icon(Icons.Default.AddCard, contentDescription = "Agregar gasto")
-                    Text("Agregar gasto", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                }
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(Icons.Default.Checklist, contentDescription = "Repartir gastos")
+                        Text("Repartir gastos", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    }
 
+                }
+                Button(
+                    onClick = { showBottomModal = true },
+                    modifier = Modifier.padding(16.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = VioletaFuerte,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier.padding(8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(Icons.Default.AddCard, contentDescription = "Agregar gasto")
+                        Text("Agregar gasto", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    }
+
+                }
             }
         }
     ) { innerPadding ->
@@ -138,6 +161,7 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
             }
         }
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -145,22 +169,33 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
                 .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
-            ContentDetailHeader(
-                detailViewModel = viewModel,
-                onAddParticipantClick = { showDialogParticipant = true },
-                onDeleteParticipant = { showDeleteParticipantDialog = true; participantId = it })
-            if (showBottomModal) {
-                AddExpenseBottomSheet(
-                    onDismiss = { showBottomModal = false },
-                    state.participants,
-                    onAddExpenseClick = {
-                        amount, description, payerId -> viewModel.addExpense(amount, description, payerId)
-                        showBottomModal = false
+            if (goToSettlement) {
+                SettlementContent(
+                    state.event!!,
+                    debts = state.debts,
+                    state.participants.size
+                )
+            } else {
+                ContentDetailHeader(
+                    detailViewModel = viewModel,
+                    onAddParticipantClick = { showDialogParticipant = true },
+                    onDeleteParticipant = {
+                        showDeleteParticipantDialog = true; participantId = it
                     })
+                if (showBottomModal) {
+                    AddExpenseBottomSheet(
+                        onDismiss = { showBottomModal = false },
+                        state.participants,
+                        onAddExpenseClick = { amount, description, payerId ->
+                            viewModel.addExpense(amount, description, payerId)
+                            showBottomModal = false
+                        })
+                }
+
             }
 
         }
+
 
     }
 }
