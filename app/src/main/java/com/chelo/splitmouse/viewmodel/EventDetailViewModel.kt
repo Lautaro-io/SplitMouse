@@ -37,6 +37,7 @@ class EventDetailViewModel(
     val uiState: StateFlow<EventDetailState> =
         combine(event, participants, expenses) { event, participants, expenses ->
             val calculatedDebts = getEventSettlementUseCase(participants, expenses)
+            Log.i("CHELO", calculatedDebts.toString())
             EventDetailState(
                 event,
                 participants = participants,
