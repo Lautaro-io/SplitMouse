@@ -87,7 +87,7 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
             modifier = Modifier
                 .background(bgColor)
                 .padding(innerPadding)
-                .padding( 16.dp),
+                .padding(16.dp),
             eventViewModel = viewmodel,
             navigateToDetail
         )
@@ -166,7 +166,7 @@ fun MainContent(
         }
 
         if (showBottomModal) {
-            BottomForm(onDismiss = { showBottomModal = false })
+            BottomForm(onDismiss = { showBottomModal = false }, navigate = { navigateToDetail(state.events.last().id ?: 0 ) })
         }
     }
 }
