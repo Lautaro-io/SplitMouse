@@ -24,6 +24,7 @@ import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
+import com.chelo.splitmouse.ui.toArgentineCurrency
 
 @Composable
 fun CardTotalSpent(
@@ -62,7 +63,7 @@ fun CardTotalSpent(
                     textAlign = TextAlign.Start
                 )
                 Text(
-                    "$ ${event.totalAmount.toInt()}",
+                    event.totalAmount.toArgentineCurrency(),
                     fontSize = 50.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
