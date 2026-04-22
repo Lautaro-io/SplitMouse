@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.ui.screens.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -60,7 +61,8 @@ fun AddExpenseBottomSheet(
     var participantId by remember { mutableLongStateOf(0L) }
     var amount by remember { mutableDoubleStateOf(0.0) }
     var nameExpense by remember { mutableStateOf("") }
-    var selectedParticipantId by remember { mutableStateOf<Long?>(null) }
+    var selectedParticipantId by remember { mutableStateOf<Long>(participants[0].id) }
+    var isSelected by remember { mutableStateOf(false) }
 
 
 
@@ -122,14 +124,13 @@ fun AddExpenseBottomSheet(
                 }
 
                 items(participants) { participant ->
-                    selectedParticipantId = participants[0].id
-                    val isSelected = selectedParticipantId == participant.id
+                    isSelected = selectedParticipantId == participant.id
                     InputChip(
                         selected = isSelected,
                         modifier = Modifier.padding(horizontal = 4.dp),
                         onClick = {
-                            selectedParticipantId = if (isSelected) null else participant.id
-                            participantId = selectedParticipantId ?: 0L
+                            selectedParticipantId = participant.id
+                            participantId = selectedParticipantId
                         },
                         label = { Text(participant.name) },
                         shape = RoundedCornerShape(32.dp),
@@ -164,9 +165,9 @@ fun AddExpenseBottomSheet(
 
             Button(
                 onClick = {
-                    onAddExpenseClick(amount, nameExpense, participantId)
+                    onAddExpenseClick(amount, nameExpense, selectedParticipantId)
                 },
-                enabled = amount > 0 && nameExpense.isNotBlank() && selectedParticipantId != null,
+                enabled = amount > 0 && nameExpense.isNotBlank(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
