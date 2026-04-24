@@ -7,7 +7,7 @@ import java.util.Locale
 val argentinaLocale = Locale("es", "AR")
 val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(argentinaLocale).apply {
     minimumFractionDigits = 0
-    maximumFractionDigits = 2
+    maximumFractionDigits = 0
 }
 
 fun Double.toArgentineCurrency(): String {
