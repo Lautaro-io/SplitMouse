@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
@@ -36,7 +37,7 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding( 8.dp),
+            .padding(8.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
     ) {
@@ -63,12 +64,16 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
             Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
+                    .weight(1f)
             ) {
-                Text(expense.description, fontWeight = FontWeight.Bold , fontSize = 24.sp)
+                Text(expense.description, fontWeight = FontWeight.Bold , fontSize = 24.sp, maxLines = 1 , overflow = TextOverflow.Ellipsis)
                 PersonalizedText("Paid by $name", listOf(name), 16)
             }
-            Column(modifier = Modifier.weight(1f).padding(vertical = 8.dp), horizontalAlignment = Alignment.End) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .padding(vertical = 8.dp), horizontalAlignment = Alignment.End) {
                 Text(expense.amount.toArgentineCurrency(), fontWeight = FontWeight.ExtraBold , fontSize = 24.sp)
             }
 
