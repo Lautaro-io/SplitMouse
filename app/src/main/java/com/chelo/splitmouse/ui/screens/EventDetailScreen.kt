@@ -41,14 +41,14 @@ import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.ui.screens.components.AddExpenseBottomSheet
 import com.chelo.splitmouse.ui.screens.components.AddParticipantDialog
 import com.chelo.splitmouse.ui.screens.components.ContentDetailHeader
-import com.chelo.splitmouse.ui.screens.components.SettlementContent
+import com.chelo.splitmouse.ui.screens.components.SettlementScreen
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 
 
 @Composable
-fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
+fun EventDetailScreen(onBack: () -> Unit, navToDebt: (Long) -> Unit, viewModel: EventDetailViewModel) {
 
     val state by viewModel.uiState.collectAsState()
     var showDialogParticipant by remember { mutableStateOf(false) }
@@ -95,24 +95,27 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
         },
         floatingActionButton = {
             Column() {
-                Button(
-                    onClick = { goToSettlement = true },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
-                        contentColor = Color.White
-                    )
-                ) {
-                    Row(
-                        modifier = Modifier.padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                if (state.debts.isNotEmpty()){
+                    Button(
+                        onClick = { navToDebt(viewModel.eventId) },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
+                            contentColor = Color.White
+                        )
                     ) {
-                        Icon(Icons.Default.Checklist, contentDescription = "Repartir gastos")
-                        Text("Repartir gastos", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                    }
+                        Row(
+                            modifier = Modifier.padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(Icons.Default.Checklist, contentDescription = "Repartir gastos")
+                            Text("Repartir gastos", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        }
 
+                    }
                 }
+
                 Button(
                     onClick = { showBottomModal = true },
                     modifier = Modifier.padding(16.dp),
@@ -170,10 +173,9 @@ fun EventDetailScreen(onBack: () -> Unit, viewModel: EventDetailViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (goToSettlement) {
-                SettlementContent(
-                    state.event!!,
-                    debts = state.debts,
-                    state.participants.size
+                SettlementScreen(
+                    onBack = onBack,
+                    viewModel
                 )
             } else {
                 ContentDetailHeader(
