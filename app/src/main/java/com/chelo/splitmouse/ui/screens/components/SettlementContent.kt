@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.ui.screens.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,16 +13,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,7 +37,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.domain.model.Debt
@@ -41,61 +47,46 @@ import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.ui.toArgentineCurrency
-import java.util.Locale
-import kotlin.math.roundToInt
-
-
-val mockEvent = Event(
-    id = 1L,
-    name = "Milaneseada en Miramar",
-    date = "22/04/2026",
-    description = "Llevar para tomar y algo para fumar",
-    totalAmount = 18000.0
-)
-
-val mockDebts = listOf(
-    Debt(
-        from = "Ale",
-        to = "Chelo",
-        amount = 6000.0
-    ),
-    Debt(
-        from = "Mito",
-        to = "Chelo",
-        amount = 3000.0
-    )
-)
+import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 
 @Composable
-fun SettlementContent(
-    event: Event = mockEvent,
-    debts: List<Debt> = mockDebts,
-    participantsSize: Int = 2,
+fun SettlementScreen(
+    onBack: () -> Unit,
+    viewModel: EventDetailViewModel,
 ) {
-    CardHeader(event, participantsSize)
+    val state by viewModel.uiState.collectAsState()
+    val event = state.event ?: return
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            "Liquidacion de pagos",
-            color = BlackPurple,
-            fontSize = 24.sp,
-            modifier = Modifier.fillMaxWidth(),
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Start
-        )
+    BackHandler() {
+        onBack()
+    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        CardHeader(event, state.participants.size, onBack = onBack)
 
-        LazyColumn() {
-            items(debts.reversed()) { debt ->
-                DebtItem(debt)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(
+                "Liquidacion de pagos",
+                color = BlackPurple,
+                fontSize = 24.sp,
+                modifier = Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start
+            )
+
+            LazyColumn() {
+                items(state.debts.reversed()) { debt ->
+                    DebtItem(debt)
+                }
             }
         }
     }
+
 }
 
 @Composable
@@ -150,9 +141,8 @@ fun DebtItem(debt: Debt) {
 }
 
 
-@Preview(showBackground = true)
 @Composable
-fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
+fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) {
     val bgColor = Brush.linearGradient(
         colors = listOf(Purple40, VioletaFuerte),
         start = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY),
@@ -161,15 +151,33 @@ fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.4f)
+            .fillMaxHeight(0.45f)
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
             .background(bgColor),
 
         ) {
+        IconButton(
+            onClick = onBack,
+            modifier = Modifier
+                .statusBarsPadding()
+                .align(Alignment.TopStart)
+                .padding(start = 8.dp),
+
+            ) {
+            Icon(
+                Icons.Default.ArrowBackIosNew,
+                contentDescription = "Atras",
+                tint = Color.White,
+                modifier = Modifier.size(20.dp)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .matchParentSize()
-                .padding(8.dp), verticalArrangement = Arrangement.SpaceBetween
+                .statusBarsPadding()
+                .padding(top = 48.dp, start = 16.dp, end = 16.dp, bottom = 24.dp),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 verticalAlignment = Alignment.Top,
@@ -207,7 +215,11 @@ fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                PersonalizedCard (modifier = Modifier.weight(1f).height(180.dp)){
+                PersonalizedCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(180.dp)
+                ) {
                     Text(
                         "Total a pagar",
                         color = Color.LightGray,
@@ -217,14 +229,18 @@ fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         event.totalAmount.toArgentineCurrency(),
-
+                        maxLines = 1,
                         color = Color.White,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
 
-                PersonalizedCard (modifier = Modifier.weight(1f).height(180.dp)){
+                PersonalizedCard(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(180.dp)
+                ) {
                     Text(
                         "Cuota fija",
                         color = Color.LightGray,
@@ -236,6 +252,7 @@ fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
                     val quote = event.totalAmount / participantSize
                     Text(
                         quote.toArgentineCurrency(),
+                        maxLines = 1,
                         color = Color.White,
                         fontSize = 32.sp,
                         fontWeight = FontWeight.ExtraBold
@@ -259,7 +276,7 @@ fun CardHeader(event: Event = mockEvent, participantSize: Int = 5) {
 
 
 @Composable
-fun PersonalizedCard( modifier: Modifier = Modifier , content: @Composable () -> Unit) {
+fun PersonalizedCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = Pink123, contentColor = Color.White),
