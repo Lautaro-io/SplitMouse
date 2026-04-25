@@ -55,7 +55,7 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
                     .background(Pink40)
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.pergamino),
+                    painter = painterResource(R.drawable.ic_cash),
                     contentDescription = "Expense",
                     tint = VioletaFuerte,
                     modifier = Modifier.align(Alignment.Center)
