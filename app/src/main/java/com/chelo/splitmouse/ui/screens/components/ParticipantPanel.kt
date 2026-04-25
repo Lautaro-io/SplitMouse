@@ -3,7 +3,6 @@ package com.chelo.splitmouse.ui.screens.components
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,13 +18,13 @@ import androidx.compose.material3.InputChipDefaults.inputChipColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.domain.model.Participant
@@ -46,29 +45,17 @@ fun ParticipantPanel(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                "Participantes",
-                color = VioletaFuerte,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-            )
-            TextButton(onClick = { TODO() }) {
-                Text(
-                    text = "Ver Más",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                    color = VioletaFuerte
-                )
 
-            }
-        }
+        Text(
+            "Participantes",
+            color = VioletaFuerte,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start
+        )
+
+
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,
