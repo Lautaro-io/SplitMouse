@@ -45,7 +45,7 @@ import org.koin.androidx.compose.koinViewModel
 fun BottomForm(
     onDismiss: () -> Unit,
     viewmodel: AddEventViewModel = koinViewModel(),
-    navigate: () -> Unit = {},
+    navigate: (Long) -> Unit = {},
 ) {
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -122,9 +122,9 @@ fun BottomForm(
                 onClick = {
                     viewmodel.addEvent(
                         onSuccess = {
+                            navigate(it)
                             onDismiss()
                         })
-                    navigate()
                 },
                 enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
