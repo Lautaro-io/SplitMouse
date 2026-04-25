@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.ui.screens.TextEmptyParticipants
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
@@ -43,6 +44,7 @@ fun ContentDetailHeader(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+
         LazyColumn() {
             item {
                 Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -78,7 +80,7 @@ fun ContentDetailHeader(
 
                     }
                     CardDescriptionDetail(event.description)
-                    CardTotalSpent(event , participants.size)
+                    CardTotalSpent(event, participants.size)
                     ParticipantPanel(
                         participants,
                         onAddParticipantClick = onAddParticipantClick,
@@ -98,14 +100,22 @@ fun ContentDetailHeader(
 
 
             }
-            items(state.expenses) { expense ->
-                CardExpense(
-                    expense = expense,
-                    name = participants.find { it.id == expense.payerId }?.name ?: ""
-                )
-            }
-        }
+            when {
+                participants.isEmpty() ->
+                    item { TextEmptyParticipants("Agrega nuevos participantes.") }
 
+                state.expenses.isEmpty() -> item { TextEmptyParticipants("Agrega nuevos gastos para empezar a repartir.") }
+                else -> {
+                    items(state.expenses) { expense ->
+                        CardExpense(
+                            expense = expense,
+                            name = participants.find { it.id == expense.payerId }?.name ?: ""
+                        )
+                    }
+                }
+            }
+
+        }
 
 
     }
