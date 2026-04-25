@@ -8,3 +8,7 @@ object Home
 
 @Serializable
 data class EventDetail(val eventId : Long)
+
+
+@Serializable
+data class DebtDetail(val eventId: Long)

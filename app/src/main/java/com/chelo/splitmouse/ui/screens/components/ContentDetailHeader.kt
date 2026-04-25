@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -23,6 +24,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.ui.formatFecha
+import com.chelo.splitmouse.ui.screens.TextEmptyParticipants
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
@@ -39,68 +42,86 @@ fun ContentDetailHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(32.dp),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Column() {
-            Text(
-                event.name,
-                color = BlackPurple,
-                fontSize = 42.sp,
-                fontWeight = FontWeight.ExtraBold,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 1,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    Icons.Default.CalendarMonth,
-                    contentDescription = "Fecha del evento",
-                    tint = VioletaFuerte
-                )
-                Spacer(Modifier.width(4.dp))
+
+        LazyColumn() {
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(
+                        event.name,
+                        color = BlackPurple,
+                        fontSize = 42.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 1,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.CalendarMonth,
+                            contentDescription = "Fecha del evento",
+                            tint = VioletaFuerte
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            formatFecha(event.date) ,
+                            color = VioletaFuerte,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.Start
+                        )
+
+                    }
+                    CardDescriptionDetail(event.description)
+                    CardTotalSpent(event, participants.size)
+                    ParticipantPanel(
+                        participants,
+                        onAddParticipantClick = onAddParticipantClick,
+                        onLongPress = { onDeleteParticipant(it) })
+
+
+                }
+
                 Text(
-                    event.date,
+                    "Gastos",
                     color = VioletaFuerte,
-                    fontSize = 16.sp,
                     fontWeight = FontWeight.ExtraBold,
+                    fontSize = 20.sp,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Start
                 )
 
+
+            }
+            when {
+                participants.isEmpty() ->
+                    item { TextEmptyParticipants("Agrega nuevos participantes.") }
+
+                state.expenses.isEmpty() -> item { TextEmptyParticipants("Agrega nuevos gastos para empezar a repartir.") }
+                else -> {
+                    items(state.expenses) { expense ->
+                        CardExpense(
+                            expense = expense,
+                            name = participants.find { it.id == expense.payerId }?.name ?: ""
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(64.dp))
+                    }
+                }
             }
 
         }
-        CardDescriptionDetail(event.description)
-        CardTotalSpent(event , participants.size)
-        ParticipantPanel(
-            participants,
-            onAddParticipantClick = onAddParticipantClick,
-            onLongPress = { onDeleteParticipant(it) })
 
-        Text(
-            "Gastos",
-            color = VioletaFuerte,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 20.sp,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Start
-        )
-        LazyColumn() {
-            items(state.expenses) { expense ->
-                CardExpense(
-                    expense = expense,
-                    name = participants.find { it.id == expense.payerId }?.name ?: ""
-                )
-            }
-
-        }
 
     }
 

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface EventRepository {
 
 
-    suspend fun addEvent(event: Event)
+    suspend fun addEvent(event: Event) : Long
 
     suspend fun updateEvent(event: Event)
 

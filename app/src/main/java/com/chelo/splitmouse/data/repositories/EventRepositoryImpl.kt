@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
-    override suspend fun addEvent(event: Event) {
-        eventDao.insertEvent(event.toEntity())
+    override suspend fun addEvent(event: Event) : Long {
+       return  eventDao.insertEvent(event.toEntity())
     }
 
     override suspend fun updateEvent(event: Event) {

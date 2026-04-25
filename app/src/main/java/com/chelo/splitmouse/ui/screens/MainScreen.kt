@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,14 +29,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
+import com.chelo.splitmouse.ui.screens.components.CardEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
-import com.chelo.splitmouse.ui.screens.components.EventCard
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
@@ -49,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
     val bgColor = Brush.verticalGradient(
-        0.7f to Color.Transparent,
+        0.5f to Color.Transparent,
         1.0f to Pink40
     )
 
@@ -73,10 +73,10 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                     fontFamily = FontFamily.SansSerif
                 )
                 Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = "",
+                    painterResource(R.drawable.ic_app),
+                    contentDescription = "Icon App",
                     tint = VioletaFuerte,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(64.dp)
                 )
             }
         },
@@ -87,9 +87,9 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
             modifier = Modifier
                 .background(bgColor)
                 .padding(innerPadding)
-                .padding( 16.dp),
+                .padding(16.dp),
             eventViewModel = viewmodel,
-            navigateToDetail
+            navigateToDetail = { navigateToDetail(it) }
         )
 
 
@@ -116,60 +116,64 @@ fun MainContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.isLoading){
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+        when {
+            state.isLoading -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
-        }else{
-            when  {
-                state.events.isEmpty() -> EmptyEventContent(onButtonClick = { showBottomModal = true })
-                else -> {
 
-                    LazyColumn {
-                        item {
-                            CardAddEvent(onButtonClick = { showBottomModal = true })
-                        }
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 32.dp, horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+            state.events.isEmpty() -> EmptyEventContent(onButtonClick = { showBottomModal = true })
+            else -> {
+
+                LazyColumn() {
+                    item {
+                        CardAddEvent(onButtonClick = { showBottomModal = true })
+                    }
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp, horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Eventos Activos",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 28.sp,
+                                color = BlackPurple
+                            )
+                            TextButton(onClick = { itemsCount = events.size }) {
                                 Text(
-                                    "Eventos Activos",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 28.sp,
-                                    color = BlackPurple
+                                    text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 18.sp,
+                                    color = Purple40
                                 )
-                                TextButton(onClick = { itemsCount = events.size }) {
-                                    Text(
-                                        text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 18.sp,
-                                        color = Purple40
-                                    )
-
-                                }
 
                             }
-                        }
-                        items(events.reversed().take(itemsCount)) {
-                            EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+
                         }
                     }
+                    items(events.take(itemsCount), key = { event -> event.id }) {
+                        CardEvent(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+                    }
                 }
+            }
         }
 
 
-        }
+
 
         if (showBottomModal) {
-            BottomForm(onDismiss = { showBottomModal = false })
+            BottomForm(onDismiss = { showBottomModal = false }, navigate = { navigateToDetail(it) })
         }
     }
 }
+
 
 
 
