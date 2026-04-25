@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -31,10 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
@@ -73,10 +76,10 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                     fontFamily = FontFamily.SansSerif
                 )
                 Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = "",
+                    painterResource(R.drawable.ic_app),
+                    contentDescription = "Icon App",
                     tint = VioletaFuerte,
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(64.dp)
                 )
             }
         },
@@ -89,7 +92,7 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                 .padding(innerPadding)
                 .padding(16.dp),
             eventViewModel = viewmodel,
-            navigateToDetail
+            navigateToDetail = { navigateToDetail(it) }
         )
 
 
@@ -116,60 +119,64 @@ fun MainContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.isLoading){
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+
+        when {
+            state.isLoading -> Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator()
             }
-        }else{
-            when  {
-                state.events.isEmpty() -> EmptyEventContent(onButtonClick = { showBottomModal = true })
-                else -> {
 
-                    LazyColumn {
-                        item {
-                            CardAddEvent(onButtonClick = { showBottomModal = true })
-                        }
-                        item {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 32.dp, horizontal = 16.dp),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+            state.events.isEmpty() -> EmptyEventContent(onButtonClick = { showBottomModal = true })
+            else -> {
+
+                LazyColumn() {
+                    item {
+                        CardAddEvent(onButtonClick = { showBottomModal = true })
+                    }
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp, horizontal = 16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "Eventos Activos",
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 28.sp,
+                                color = BlackPurple
+                            )
+                            TextButton(onClick = { itemsCount = events.size }) {
                                 Text(
-                                    "Eventos Activos",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 28.sp,
-                                    color = BlackPurple
+                                    text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 18.sp,
+                                    color = Purple40
                                 )
-                                TextButton(onClick = { itemsCount = events.size }) {
-                                    Text(
-                                        text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
-                                        fontWeight = FontWeight.SemiBold,
-                                        fontSize = 18.sp,
-                                        color = Purple40
-                                    )
-
-                                }
 
                             }
-                        }
-                        items(events.reversed().take(itemsCount)) {
-                            EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+
                         }
                     }
+                    items(events.take(itemsCount), key = { event -> event.id }) {
+                        EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+                    }
                 }
+            }
         }
 
 
-        }
+
 
         if (showBottomModal) {
-            BottomForm(onDismiss = { showBottomModal = false }, navigate = { navigateToDetail(state.events.last().id ?: 0 ) })
+            BottomForm(onDismiss = { showBottomModal = false }, navigate = { navigateToDetail(it) })
         }
     }
 }
+
 
 
 
