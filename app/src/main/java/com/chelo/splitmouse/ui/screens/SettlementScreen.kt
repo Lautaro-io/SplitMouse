@@ -1,4 +1,4 @@
-package com.chelo.splitmouse.ui.screens.components
+package com.chelo.splitmouse.ui.screens
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -24,7 +24,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.domain.model.Debt
 import com.chelo.splitmouse.domain.model.Event
+import com.chelo.splitmouse.ui.screens.components.ParticipantsTip
+import com.chelo.splitmouse.ui.screens.components.PersonalizedText
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink123
 import com.chelo.splitmouse.ui.theme.Pink40
@@ -221,7 +222,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         .height(180.dp)
                 ) {
                     Text(
-                        "Total a pagar",
+                        "Total gastado.",
                         color = Color.LightGray,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
