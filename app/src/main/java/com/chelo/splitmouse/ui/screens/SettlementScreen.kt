@@ -67,7 +67,7 @@ fun SettlementScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -84,7 +84,12 @@ fun SettlementScreen(
                 items(state.debts.reversed()) { debt ->
                     DebtItem(debt)
                 }
+                item  {
+                    Spacer(modifier = Modifier.height(64.dp))
+
+                }
             }
+
         }
     }
 
@@ -102,7 +107,7 @@ fun DebtItem(debt: Debt) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -132,8 +137,9 @@ fun DebtItem(debt: Debt) {
 
             Text(
                 text = debt.amount.toArgentineCurrency(),
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp
+                fontWeight = FontWeight.ExtraBold,
+                color = VioletaFuerte,
+                fontSize = 22.sp
             )
 
         }
@@ -152,7 +158,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(0.45f)
+            .fillMaxHeight(0.5f)
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
             .background(bgColor),
 
@@ -185,7 +191,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp, vertical = 4.dp)
             ) {
                 Column(
                     modifier = Modifier.weight(1f),
@@ -219,7 +225,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                 PersonalizedCard(
                     modifier = Modifier
                         .weight(1f)
-                        .height(180.dp)
+                        .height(200.dp)
                 ) {
                     Text(
                         "Total gastado.",
@@ -232,7 +238,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         event.totalAmount.toArgentineCurrency(),
                         maxLines = 1,
                         color = Color.White,
-                        fontSize = 32.sp,
+                        fontSize = 24.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                 }
@@ -255,7 +261,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         quote.toArgentineCurrency(),
                         maxLines = 1,
                         color = Color.White,
-                        fontSize = 32.sp,
+                        fontSize = 24.sp,
                         fontWeight = FontWeight.ExtraBold
                     )
                     Text(
