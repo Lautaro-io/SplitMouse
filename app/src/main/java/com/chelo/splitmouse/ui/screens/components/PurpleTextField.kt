@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,11 +84,12 @@ fun PurpleTextField(
                     unfocusedContainerColor = Pink40,
                     focusedContainerColor = Color.White,
                     unfocusedPlaceholderColor = PurpleGrey80,
-                    focusedBorderColor = Transparent,
-                    unfocusedBorderColor = Transparent
+                    focusedBorderColor = VioletaFuerte,
+                    unfocusedBorderColor = Transparent,
+
 
                 ),
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+                keyboardOptions = KeyboardOptions(keyboardType = keyboardType,capitalization = KeyboardCapitalization.Sentences),
                 trailingIcon = {
                     trailingIcon?.let {
                         Icon(
