@@ -4,7 +4,7 @@ import com.chelo.splitmouse.data.local.entities.EventEntity
 
 
 data class Event(
-    val id: Long? = 0 ,
+    val id: Long = 0 ,
     val name: String,
     val date: String,
     val description: String,
