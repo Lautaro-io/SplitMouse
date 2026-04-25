@@ -23,24 +23,25 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(4000L), false)
 
 
-    fun addEvent(onSuccess: () -> Unit) {
+    fun addEvent(onSuccess: (Long) -> Unit) {
         val event = _formState.value
         viewModelScope.launch {
             try {
                 if (!validateForm()) throw Exception("Invalid data")
-                repo.addEvent(
-                    Event(
-                        id = 0,
-                        name = event.name,
-                        description = event.description ?: "",
-                        date = event.date,
-                        totalAmount = 0.0
-                    )
+                val event = Event(
+                    id = 0,
+                    name = event.name,
+                    description = event.description ?: "",
+                    date = event.date,
+                    totalAmount = 0.0
                 )
+                val generatedEvent = repo.addEvent(
+                    event
+                )
+                onSuccess(generatedEvent)
                 _formState.update {
                     EventFormState()
                 }
-                onSuccess()
 
             }catch (e : Exception){ }
         }
