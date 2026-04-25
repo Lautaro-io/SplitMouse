@@ -1,6 +1,5 @@
 package com.chelo.splitmouse.ui.screens.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -18,9 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.ui.theme.Pink123
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Purple40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Composable
 fun ParticipantsTip(text: String , modifier : Modifier = Modifier) {
