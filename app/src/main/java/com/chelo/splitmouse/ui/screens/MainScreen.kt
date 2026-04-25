@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -21,7 +19,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,8 +37,8 @@ import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
+import com.chelo.splitmouse.ui.screens.components.CardEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
-import com.chelo.splitmouse.ui.screens.components.EventCard
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
@@ -162,7 +159,7 @@ fun MainContent(
                         }
                     }
                     items(events.take(itemsCount), key = { event -> event.id }) {
-                        EventCard(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+                        CardEvent(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
                     }
                 }
             }
