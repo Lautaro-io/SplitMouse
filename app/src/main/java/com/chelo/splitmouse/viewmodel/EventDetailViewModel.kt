@@ -50,7 +50,7 @@ class EventDetailViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(4000),
-            EventDetailState(event = null, isLoading = true)
+            EventDetailState(event = null , isLoading = true)
         )
 
 
