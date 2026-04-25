@@ -46,7 +46,7 @@ import com.chelo.splitmouse.ui.theme.VioletaFuerte
 @Preview(showBackground = true)
 @Composable
 fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
-    val btnbg = Brush.horizontalGradient(listOf(VioletaFuerte, Purple80))
+    val btnBg = Brush.horizontalGradient(listOf(VioletaFuerte, Purple80))
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +73,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                     modifier = Modifier.padding(8.dp)
                 ) {
                     Icon(
-                        painterResource(R.drawable.pergamino),
+                        painterResource(R.drawable.ic_pergamino),
                         contentDescription = "Evento vacio",
                         tint = VioletaFuerte,
                         modifier = Modifier.size(120.dp)
@@ -108,7 +108,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
             modifier = Modifier
                 .padding(16.dp)
                 .clip(RoundedCornerShape(24.dp))
-                .background(btnbg)
+                .background(btnBg)
                 .fillMaxWidth()
         ) {
             Button(
