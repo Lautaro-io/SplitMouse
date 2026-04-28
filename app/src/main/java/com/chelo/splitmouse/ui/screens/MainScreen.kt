@@ -35,10 +35,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
+import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
 import com.chelo.splitmouse.ui.screens.components.CardEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
+import com.chelo.splitmouse.ui.screens.components.EventActionsMenu
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
@@ -49,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
     val bgColor = Brush.verticalGradient(
-        0.5f to Color.Transparent,
+        0.3f to Color.Transparent,
         1.0f to Pink40
     )
 
@@ -107,7 +109,9 @@ fun MainContent(
     val state by eventViewModel.uiState.collectAsState()
     val events = state.events
     var showBottomModal by remember { mutableStateOf(false) }
-
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var eventSelected by remember { mutableStateOf<Event?>(null) }
+    var dotsExpanded by remember { mutableStateOf<Long?>(null) }
 
     var itemsCount by remember { mutableIntStateOf(3) }
 
@@ -142,7 +146,7 @@ fun MainContent(
                         ) {
                             Text(
                                 "Eventos Activos",
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 fontSize = 28.sp,
                                 color = BlackPurple
                             )
@@ -158,18 +162,52 @@ fun MainContent(
 
                         }
                     }
-                    items(events.take(itemsCount), key = { event -> event.id }) {
-                        CardEvent(it, onEventClick = { it.id?.let { id -> navigateToDetail(id) } })
+                    items(events.take(itemsCount), key = { event -> event.id }) { event ->
+                        Box(modifier = Modifier.fillMaxWidth()) {
+                            CardEvent(
+                                event = event,
+                                menuExpanded = dotsExpanded == event.id,
+                                onLongPress = { id -> dotsExpanded = id },
+                                onEventClick = { navigateToDetail(event.id) },
+                                onDotsClick = { dotsExpanded = event.id },
+                                onDismissMenu = { dotsExpanded = null },
+                                onEditClick = {
+                                    eventSelected = event
+                                    showBottomModal = true
+                                },
+                                onDeleteClick = {
+                                    eventSelected = event
+                                    showDeleteDialog = true
+                                }
+                            )
+
+                        }
+
                     }
+
+
                 }
+
             }
         }
 
 
-
+        eventSelected?.let { event ->
+            if (showDeleteDialog) {
+                DeleteDialog(
+                    title = "Eliminar evento",
+                    label = "Desea eliminar ${event.name}",
+                    onDismiss = { showDeleteDialog = false; eventSelected = null },
+                    name = "",
+                    onConfirm = { })
+            }
+        }
 
         if (showBottomModal) {
-            BottomForm(onDismiss = { showBottomModal = false }, navigate = { navigateToDetail(it) })
+            BottomForm(
+                eventSelected,
+                onDismiss = { showBottomModal = false },
+                navigate = { navigateToDetail(it) })
         }
     }
 }
