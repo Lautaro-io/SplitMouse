@@ -160,7 +160,9 @@ fun EventDetailScreen(
 
             showDeleteParticipantDialog -> {
                 participantId?.let {
-                    DeleteParticipantDialog(
+                    DeleteDialog(
+                        title = "Eliminar participante",
+                        label = "Estas seguro que quieres eliminar a",
                         onDismiss = { showDeleteParticipantDialog = false },
                         onConfirm = {
                             viewModel.deleteParticipant(it)
@@ -214,13 +216,13 @@ fun EventDetailScreen(
 }
 
 @Composable
-fun DeleteParticipantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit, name: String) {
+fun DeleteDialog(title : String = "Eliminar Participante", label : String = "", onDismiss: () -> Unit, onConfirm: () -> Unit, name: String) {
     AlertDialog(
         containerColor = Color.White,
         onDismissRequest = onDismiss,
-        title = { Text("Eliminar Participante", fontWeight = FontWeight.Bold) },
+        title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
-            Text("Estas seguro que quieres eliminar a $name")
+            Text(label)
         },
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
