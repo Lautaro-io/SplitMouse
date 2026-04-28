@@ -33,7 +33,6 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
                     name = event.name,
                     description = event.description ?: "",
                     date = event.date,
-                    totalAmount = 0.0
                 )
                 val generatedEvent = repo.addEvent(
                     event
@@ -51,6 +50,7 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
     fun updateFormState(field: FieldType, value: String) {
         _formState.update {
             when (field) {
+                FieldType.ID -> it.copy(id = value.toLong())
                 FieldType.NAME -> it.copy(name = value)
                 FieldType.DESCRIPTION -> it.copy(description = value)
                 FieldType.DATE -> it.copy(date = value)
@@ -64,13 +64,33 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
 
     }
 
+    fun updateEvent(onSuccess: () -> Unit) {
+        val event = _formState.value
+        viewModelScope.launch {
+            try {
+                if (!validateForm()) throw Exception("Invalid data")
+                val eventToUpdate = Event(
+                    id = event.id ?: 0,
+                    name = event.name,
+                    description = event.description ?: "",
+                    date = event.date,
+                )
+                repo.updateEvent(eventToUpdate)
+                onSuccess()
+            }catch (e : Exception){
+
+            }
+        }
+    }
+
 
 }
 
 
-enum class FieldType { NAME, DESCRIPTION, DATE }
+enum class FieldType { ID, NAME, DESCRIPTION, DATE }
 
 data class EventFormState(
+    val id : Long? = null,
     val name: String = "",
     val description: String? = null,
     val date: String = "",
