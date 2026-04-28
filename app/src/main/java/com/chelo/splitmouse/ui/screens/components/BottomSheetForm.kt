@@ -34,6 +34,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.AddEventViewModel
@@ -43,6 +44,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BottomForm(
+    event: Event? = null,
     onDismiss: () -> Unit,
     viewmodel: AddEventViewModel = koinViewModel(),
     navigate: (Long) -> Unit = {},
@@ -53,6 +55,13 @@ fun BottomForm(
 
     var showDatePicker by remember { mutableStateOf(false) }
     val state by viewmodel.formState.collectAsState()
+    event?.let {
+        viewmodel.updateFormState(FieldType.ID, it.id.toString())
+        viewmodel.updateFormState(FieldType.NAME, it.name)
+        viewmodel.updateFormState(FieldType.DESCRIPTION, it.description)
+        viewmodel.updateFormState(FieldType.DATE, it.date)
+    }
+
 
 
     ModalBottomSheet(
@@ -88,14 +97,14 @@ fun BottomForm(
             PurpleTextField(
                 text = "Nombre del evento",
                 placeholder = "Asado con amigos",
-                value = state.name,
+                value =  state.name,
                 onValueChange = { viewmodel.updateFormState(FieldType.NAME, it) },
                 trailingIcon = Icons.Default.Preview
             )
             PurpleTextField(
                 text = "Cuando es?",
                 placeholder = "Hoy, 12:00",
-                value = state.date,
+                value =  state.date,
                 readOnly = true,
                 onValueChange = { },
                 trailingIcon = Icons.Default.CalendarMonth,
@@ -120,11 +129,19 @@ fun BottomForm(
 
             Button(
                 onClick = {
-                    viewmodel.addEvent(
-                        onSuccess = {
-                            navigate(it)
-                            onDismiss()
-                        })
+                    if (event == null) {
+                        viewmodel.addEvent(
+                            onSuccess = {
+                                navigate(it)
+                                onDismiss()
+                            })
+
+                    } else {
+                        viewmodel.updateEvent(
+                            onSuccess = {
+                                onDismiss()
+                            })
+                    }
                 },
                 enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
@@ -138,7 +155,7 @@ fun BottomForm(
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Crear Evento",
+                    text = if (event != null) "Actualizar" else "Crear Evento",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
