@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalStdlibApi::class)
 class MainViewModel(private val repo: EventRepository) : ViewModel() {
@@ -22,6 +23,19 @@ class MainViewModel(private val repo: EventRepository) : ViewModel() {
         initialValue = MainUiState(isLoading = true)
     )
     val uiState = _uiState
+
+
+    fun deleteEvent(event: Event, onSuccess : () -> Unit){
+        viewModelScope.launch {
+            try {
+                repo.deleteEvent(event)
+                onSuccess()
+            }
+            catch (e: Exception){
+                
+            }
+        }
+    }
 
 
 
