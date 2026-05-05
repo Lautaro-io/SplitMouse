@@ -7,6 +7,7 @@ import com.chelo.splitmouse.domain.model.toEntity
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlin.math.exp
 
 class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseRepository {
 
@@ -22,5 +23,17 @@ class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseReposit
             }
         }
 
+    }
+
+    override suspend fun deleteExpense(expense: Expense) {
+        expenseDao.deleteExpense(expense.toEntity())
+    }
+
+    override suspend fun updateExpense(expense: Expense) {
+        expenseDao.updateExpense(expense.toEntity())
+    }
+
+    override suspend fun calculateTotalAmount(eventId: Long): Double {
+        return expenseDao.calculateTotalAmount(eventId)
     }
 }

@@ -1,10 +1,13 @@
 package com.chelo.splitmouse.data.local.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.chelo.splitmouse.data.local.entities.ExpenseEntity
+import com.chelo.splitmouse.domain.model.Expense
 import kotlinx.coroutines.flow.Flow
 
 
@@ -22,4 +25,13 @@ interface ExpenseDao {
     @Query("SELECT * FROM expenses WHERE eventId = :id")
     fun getExpensesByEvent(id: Long): Flow<List<ExpenseEntity>>
 
+    @Query("SELECT SUM(amount) FROM expenses WHERE eventId = :eventId")
+    suspend fun calculateTotalAmount(eventId: Long): Double
+
+
+    @Delete
+    suspend fun deleteExpense(expense: ExpenseEntity)
+
+    @Update
+    suspend fun updateExpense(expense: ExpenseEntity)
 }

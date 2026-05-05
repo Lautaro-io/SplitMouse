@@ -11,4 +11,9 @@ interface ExpenseRepository {
 
     fun getExpensesByEvent(eventId: Long): Flow<List<Expense>>
 
+    suspend fun deleteExpense(expense: Expense)
+    suspend fun updateExpense(expense: Expense)
+
+    suspend fun calculateTotalAmount(eventId: Long): Double
+
 }

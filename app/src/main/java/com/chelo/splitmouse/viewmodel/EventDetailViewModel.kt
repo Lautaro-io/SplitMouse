@@ -50,7 +50,7 @@ class EventDetailViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(4000),
-            EventDetailState(event = null , isLoading = true)
+            EventDetailState(event = null, isLoading = true)
         )
 
 
@@ -93,6 +93,30 @@ class EventDetailViewModel(
                 Log.i("CHELO", e.message.toString())
             }
         }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                expensesRepository.deleteExpense(expense)
+            } catch (e: Exception) {
+            }
+
+        }
+    }
+
+    fun updateExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                expensesRepository.updateExpense(expense)
+                val newAmount = expensesRepository.calculateTotalAmount(expense.eventId)
+                val eventUpdate =
+                    uiState.value.event?.copy(totalAmount = newAmount) ?: return@launch
+                eventRepository.updateEvent(eventUpdate)
+            } catch (e: Exception) {
+            }
+        }
+
     }
 
 
