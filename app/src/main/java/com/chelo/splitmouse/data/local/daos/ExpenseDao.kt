@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.chelo.splitmouse.data.local.entities.ExpenseEntity
-import com.chelo.splitmouse.domain.model.Expense
 import kotlinx.coroutines.flow.Flow
 
 

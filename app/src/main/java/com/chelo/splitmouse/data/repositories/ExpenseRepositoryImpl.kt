@@ -7,7 +7,6 @@ import com.chelo.splitmouse.domain.model.toEntity
 import com.chelo.splitmouse.domain.repositories.ExpenseRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlin.math.exp
 
 class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseRepository {
 

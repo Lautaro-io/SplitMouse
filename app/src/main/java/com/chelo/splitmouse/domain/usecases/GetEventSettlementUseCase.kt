@@ -1,6 +1,5 @@
 package com.chelo.splitmouse.domain.usecases
 
-import android.util.Log
 import com.chelo.splitmouse.domain.model.Balance
 import com.chelo.splitmouse.domain.model.Debt
 import com.chelo.splitmouse.domain.model.Expense

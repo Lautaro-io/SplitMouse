@@ -1,6 +1,5 @@
 package com.chelo.splitmouse.ui.screens
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -43,7 +42,6 @@ import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
 import com.chelo.splitmouse.ui.screens.components.CardEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
-import com.chelo.splitmouse.ui.screens.components.EventActionsMenu
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
