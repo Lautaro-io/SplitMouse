@@ -68,7 +68,10 @@ fun ContentDetailHeader(
             CardDescriptionDetail(event.description)
         }
         CardTotalSpent(event, participants.size)
-        ButtonRoulette(onButtonRouletteClick)
+        if (participants.isNotEmpty()){
+            ButtonRoulette(onButtonRouletteClick)
+        }
+
         ParticipantPanel(
             participants,
             onAddParticipantClick = onAddParticipantClick,
