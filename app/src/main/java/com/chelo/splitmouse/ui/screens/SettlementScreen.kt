@@ -225,7 +225,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                 PersonalizedCard(
                     modifier = Modifier
                         .weight(1f)
-                        .height(200.dp)
+                        .height(180.dp)
                 ) {
                     Text(
                         "Total gastado.",
