@@ -25,6 +25,6 @@ fun PersonalizedText( fullText : String , highlightText : List<String> , fontSiz
 
         }
     }
-    Text(text = annotatedString, fontSize = fontSize.sp, fontWeight = fontWeight)
+    Text(text = annotatedString, fontSize = fontSize.sp, fontWeight = fontWeight , maxLines = 1 )
 
 }
