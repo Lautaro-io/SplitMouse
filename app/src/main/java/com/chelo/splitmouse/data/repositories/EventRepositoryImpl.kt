@@ -18,7 +18,7 @@ class EventRepositoryImpl(val eventDao: EventDao) : EventRepository {
     }
 
     override suspend fun deleteEvent(event: Event) {
-        TODO("Not yet implemented")
+        eventDao.deleteEvent(event.toEntity())
     }
 
     override fun getAllEvents(): Flow<List<Event>> {
