@@ -125,72 +125,73 @@ fun ContentDetail(
 
 
                     }
-                    item {
-                        Column() {
-                            if (state.debts.isNotEmpty()) {
-                                Button(
-                                    onClick =
+
+                }
+            }
+            item {
+                Column() {
+                    if (state.debts.isNotEmpty()) {
+                        Button(
+                            onClick =
 //                                        navToDebt(viewModel.eventId)
-                                        onDebtButtonClick
-                                    ,
-                                    modifier = Modifier.fillMaxWidth().padding(
-                                        horizontal = 16.dp,
-                                        vertical = 8.dp
-                                    ),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
-                                        contentColor = Color.White
-                                    )
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(8.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        Icon(
-                                            Icons.Default.Checklist,
-                                            contentDescription = "Repartir gastos"
-                                        )
-                                        Text(
-                                            "Repartir gastos",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 16.sp
-                                        )
-                                    }
-
-                                }
-
+                                onDebtButtonClick
+                            ,
+                            modifier = Modifier.fillMaxWidth().padding(
+                                horizontal = 16.dp,
+                                vertical = 8.dp
+                            ),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.Checklist,
+                                    contentDescription = "Repartir gastos"
+                                )
+                                Text(
+                                    "Repartir gastos",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
                             }
-                            if (state.participants.isNotEmpty()) {
 
-                                Button(
-                                    onClick = onNewExpenseClick
+                        }
+
+                    }
+                    if (state.participants.isNotEmpty()) {
+
+                        Button(
+                            onClick = onNewExpenseClick
 //                                        showBottomModal = true
-                                    ,
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = VioletaFuerte,
-                                        contentColor = Color.White
-                                    )
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(8.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        Icon(
-                                            Icons.Default.AddCard,
-                                            contentDescription = "Agregar gasto"
-                                        )
-                                        Text(
-                                            "Agregar gasto",
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 16.sp
-                                        )
-                                    }
-
-                                }
+                            ,
+                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = VioletaFuerte,
+                                contentColor = Color.White
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Icon(
+                                    Icons.Default.AddCard,
+                                    contentDescription = "Agregar gasto"
+                                )
+                                Text(
+                                    "Agregar gasto",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 16.sp
+                                )
                             }
+
                         }
                     }
                 }
