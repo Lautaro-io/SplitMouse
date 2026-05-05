@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -42,6 +44,8 @@ fun PurpleTextField(
     leadingIcon: ImageVector? = null,
     showDatePicker: () -> Unit = {},
     isNumber: Boolean = false,
+    imeAction: ImeAction = ImeAction.Next,
+    onAction: () -> Unit = {},
 ) {
     val keyboardType = if (isNumber) KeyboardType.Number else KeyboardType.Text
     Column(
@@ -69,7 +73,8 @@ fun PurpleTextField(
                 value = value,
                 onValueChange = { if (!readOnly) onValueChange(it) },
                 modifier = Modifier
-                    .fillMaxWidth().padding(4.dp),
+                    .fillMaxWidth()
+                    .padding(4.dp),
                 shape = RoundedCornerShape(32.dp),
                 maxLines = 1,
                 readOnly = readOnly,
@@ -88,8 +93,15 @@ fun PurpleTextField(
                     unfocusedBorderColor = Transparent,
 
 
+                    ),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = imeAction,
+                    keyboardType = keyboardType,
+                    capitalization = KeyboardCapitalization.Sentences
                 ),
-                keyboardOptions = KeyboardOptions(keyboardType = keyboardType,capitalization = KeyboardCapitalization.Sentences),
+                keyboardActions = KeyboardActions(
+                    onAny = { onAction() }
+                ),
                 trailingIcon = {
                     trailingIcon?.let {
                         Icon(
