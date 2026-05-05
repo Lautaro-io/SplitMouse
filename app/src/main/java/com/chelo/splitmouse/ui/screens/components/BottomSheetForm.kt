@@ -30,7 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -61,11 +63,26 @@ fun BottomForm(
         viewmodel.updateFormState(FieldType.DESCRIPTION, it.description)
         viewmodel.updateFormState(FieldType.DATE, it.date)
     }
+    val onSaveAction = {
+        if (event == null) {
+            viewmodel.addEvent(onSuccess = { newId ->
+                navigate(newId)
+                onDismiss()
+            })
+        } else {
+            viewmodel.updateEvent(onSuccess = {
+                onDismiss()
+            })
+        }
+    }
 
 
-
+    val focusManager = LocalFocusManager.current
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            focusManager.clearFocus()
+            onDismiss()
+        },
         sheetState = sheetState
     ) {
         Column(
@@ -97,14 +114,14 @@ fun BottomForm(
             PurpleTextField(
                 text = "Nombre del evento",
                 placeholder = "Asado con amigos",
-                value =  state.name,
+                value = state.name,
                 onValueChange = { viewmodel.updateFormState(FieldType.NAME, it) },
                 trailingIcon = Icons.Default.Preview
             )
             PurpleTextField(
                 text = "Cuando es?",
                 placeholder = "Hoy, 12:00",
-                value =  state.date,
+                value = state.date,
                 readOnly = true,
                 onValueChange = { },
                 trailingIcon = Icons.Default.CalendarMonth,
@@ -123,26 +140,14 @@ fun BottomForm(
                 placeholder = "Describe algo del evento",
                 value = state.description ?: "",
                 onValueChange = { viewmodel.updateFormState(FieldType.DESCRIPTION, it) },
-                trailingIcon = null
+                trailingIcon = null,
+                imeAction = ImeAction.Done,
+                onAction = onSaveAction
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {
-                    if (event == null) {
-                        viewmodel.addEvent(
-                            onSuccess = {
-                                navigate(it)
-                                onDismiss()
-                            })
-
-                    } else {
-                        viewmodel.updateEvent(
-                            onSuccess = {
-                                onDismiss()
-                            })
-                    }
-                },
+                onClick = onSaveAction,
                 enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
                     .fillMaxWidth()
