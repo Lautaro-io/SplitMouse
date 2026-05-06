@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.ui.screens
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -113,8 +114,10 @@ fun MainContent(
     var showDeleteDialog by remember { mutableStateOf(false) }
     var eventSelected by remember { mutableStateOf<Event?>(null) }
     var dotsExpanded by remember { mutableStateOf<Long?>(null) }
-
     var itemsCount by remember { mutableIntStateOf(3) }
+    val visibleEvents = remember(events, itemsCount) {
+        events.take(itemsCount)
+    }
 
     Column(
         modifier = modifier.fillMaxSize(),
@@ -163,7 +166,7 @@ fun MainContent(
 
                         }
                     }
-                    items(events.take(itemsCount), key = { event -> event.id }) { event ->
+                    items(visibleEvents, key = { event -> event.id }) { event ->
                         Box(modifier = Modifier.fillMaxWidth()) {
                             CardEvent(
                                 event = event,
@@ -218,7 +221,7 @@ fun MainContent(
             }
         }
 
-        if (showBottomModal) {
+        AnimatedVisibility(showBottomModal) {
             BottomForm(
                 eventSelected,
                 onDismiss = { showBottomModal = false },
