@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Event
@@ -42,7 +43,7 @@ class MainViewModel(private val repo: EventRepository) : ViewModel() {
 
 }
 
-
+@Immutable
 data class MainUiState(
     val isLoading: Boolean = false,
     val events: List<Event> = emptyList(),

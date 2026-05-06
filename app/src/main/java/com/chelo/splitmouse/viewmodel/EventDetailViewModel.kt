@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Debt
@@ -119,23 +120,8 @@ class EventDetailViewModel(
 
     }
 
-
-//    val uiState: StateFlow<EventDetailState> =
-//        eventRepository.getEventById(eventId).map { event ->
-//
-//        EventDetailState(event)
-//    }.catch {
-//        emit(EventDetailState(event = null, isError = true, errorMessage = it.message))
-//
-//
-//    }.stateIn(
-//        viewModelScope,
-//        SharingStarted.WhileSubscribed(4000),
-//        initialValue = EventDetailState(event = null, isLoading = true)
-//    )
-//}
 }
-
+@Immutable
 data class EventDetailState(
     val event: Event?,
     val isLoading: Boolean = true,
