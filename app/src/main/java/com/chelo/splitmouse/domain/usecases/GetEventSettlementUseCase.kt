@@ -24,8 +24,8 @@ class GetEventSettlementUseCase {
         val listDebts = mutableListOf<Debt>()
 
         while (debts.isNotEmpty() && creditors.isNotEmpty()) {
-            val debtor = debts[0]
-            val creditor = creditors[0]
+            var debtor = debts[0]
+            var creditor = creditors[0]
 
 
             val debtAmount = -(debtor.balance)
@@ -41,9 +41,8 @@ class GetEventSettlementUseCase {
                     amount = amountToPay
                 )
             )
-
-            debtor.balance += amountToPay
-            creditor.balance -= amountToPay
+            debtor = debtor.copy(balance = debtor.balance + amountToPay )
+            creditor = creditor.copy(balance = creditor.balance - amountToPay)
 
             if (abs(debtor.balance) < 0.1) debts.removeAt(0)
             if (abs(creditor.balance) < 0.1) creditors.removeAt(0)
