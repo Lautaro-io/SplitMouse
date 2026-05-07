@@ -4,7 +4,10 @@ plugins {
     id("com.google.devtools.ksp")
     kotlin("plugin.serialization") version "2.3.20"
 }
-
+composeCompiler {
+    metricsDestination = layout.buildDirectory.dir("compose_metrics")
+    reportsDestination = layout.buildDirectory.dir("compose_metrics")
+}
 android {
     namespace = "com.chelo.splitmouse"
     compileSdk {
@@ -12,6 +15,7 @@ android {
             minorApiLevel = 1
         }
     }
+
 
     defaultConfig {
         applicationId = "com.chelo.splitmouse"
@@ -26,6 +30,8 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+
+            signingConfig = signingConfigs.getByName("debug")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

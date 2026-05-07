@@ -30,10 +30,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.AddEventViewModel
@@ -43,6 +46,7 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun BottomForm(
+    event: Event? = null,
     onDismiss: () -> Unit,
     viewmodel: AddEventViewModel = koinViewModel(),
     navigate: (Long) -> Unit = {},
@@ -53,10 +57,32 @@ fun BottomForm(
 
     var showDatePicker by remember { mutableStateOf(false) }
     val state by viewmodel.formState.collectAsState()
+    event?.let {
+        viewmodel.updateFormState(FieldType.ID, it.id.toString())
+        viewmodel.updateFormState(FieldType.NAME, it.name)
+        viewmodel.updateFormState(FieldType.DESCRIPTION, it.description)
+        viewmodel.updateFormState(FieldType.DATE, it.date)
+    }
+    val onSaveAction = {
+        if (event == null) {
+            viewmodel.addEvent(onSuccess = { newId ->
+                navigate(newId)
+                onDismiss()
+            })
+        } else {
+            viewmodel.updateEvent(onSuccess = {
+                onDismiss()
+            })
+        }
+    }
 
 
+    val focusManager = LocalFocusManager.current
     ModalBottomSheet(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            focusManager.clearFocus()
+            onDismiss()
+        },
         sheetState = sheetState
     ) {
         Column(
@@ -114,18 +140,14 @@ fun BottomForm(
                 placeholder = "Describe algo del evento",
                 value = state.description ?: "",
                 onValueChange = { viewmodel.updateFormState(FieldType.DESCRIPTION, it) },
-                trailingIcon = null
+                trailingIcon = null,
+                imeAction = ImeAction.Done,
+                onAction = onSaveAction
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = {
-                    viewmodel.addEvent(
-                        onSuccess = {
-                            navigate(it)
-                            onDismiss()
-                        })
-                },
+                onClick = onSaveAction,
                 enabled = viewmodel.isFormValid.collectAsState().value,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -138,7 +160,7 @@ fun BottomForm(
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Crear Evento",
+                    text = if (event != null) "Actualizar" else "Crear Evento",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

@@ -128,7 +128,7 @@ fun DebtItem(debt: Debt) {
 
 
             PersonalizedText(
-                "${debt.from} paga a ${debt.to}",
+                "${debt.from.take(8)} paga a ${debt.to.take(8)}",
                 listOf(debt.from, debt.to),
                 16,
                 color = BlackPurple,
@@ -225,7 +225,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                 PersonalizedCard(
                     modifier = Modifier
                         .weight(1f)
-                        .height(200.dp)
+                        .height(180.dp)
                 ) {
                     Text(
                         "Total gastado.",

@@ -1,5 +1,6 @@
 package com.chelo.splitmouse.viewmodel
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Event
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalStdlibApi::class)
 class MainViewModel(private val repo: EventRepository) : ViewModel() {
@@ -24,11 +26,24 @@ class MainViewModel(private val repo: EventRepository) : ViewModel() {
     val uiState = _uiState
 
 
+    fun deleteEvent(event: Event, onSuccess : () -> Unit){
+        viewModelScope.launch {
+            try {
+                repo.deleteEvent(event)
+                onSuccess()
+            }
+            catch (e: Exception){
+                
+            }
+        }
+    }
+
+
 
 
 }
 
-
+@Immutable
 data class MainUiState(
     val isLoading: Boolean = false,
     val events: List<Event> = emptyList(),

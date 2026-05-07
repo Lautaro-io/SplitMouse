@@ -1,6 +1,5 @@
 package com.chelo.splitmouse.domain.usecases
 
-import android.util.Log
 import com.chelo.splitmouse.domain.model.Balance
 import com.chelo.splitmouse.domain.model.Debt
 import com.chelo.splitmouse.domain.model.Expense
@@ -25,20 +24,15 @@ class GetEventSettlementUseCase {
         val listDebts = mutableListOf<Debt>()
 
         while (debts.isNotEmpty() && creditors.isNotEmpty()) {
-            val debtor = debts[0]
-            Log.d("CHELO", debtor.participantName)
-            val creditor = creditors[0]
-            Log.d("CHELO", creditor.participantName)
+            var debtor = debts[0]
+            var creditor = creditors[0]
 
 
             val debtAmount = -(debtor.balance)
-            Log.d("CHELO", debtAmount.toString())
 
             val creditorBalance = creditor.balance
-            Log.d("CHELO", creditorBalance.toString())
 
             val amountToPay = minOf(debtAmount, creditorBalance)
-            Log.d("CHELO", amountToPay.toString())
 
             listDebts.add(
                 Debt(
@@ -47,9 +41,8 @@ class GetEventSettlementUseCase {
                     amount = amountToPay
                 )
             )
-
-            debtor.balance += amountToPay
-            creditor.balance -= amountToPay
+            debtor = debtor.copy(balance = debtor.balance + amountToPay )
+            creditor = creditor.copy(balance = creditor.balance - amountToPay)
 
             if (abs(debtor.balance) < 0.1) debts.removeAt(0)
             if (abs(creditor.balance) < 0.1) creditors.removeAt(0)

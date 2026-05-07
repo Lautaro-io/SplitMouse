@@ -8,7 +8,7 @@ data class Event(
     val name: String,
     val date: String,
     val description: String,
-    val totalAmount: Double,
+    val totalAmount: Double = 0.0,
 )
 
 fun Event.toEntity() = EventEntity(

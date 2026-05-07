@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.data.local.daos
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -25,6 +26,9 @@ interface EventDao {
 
     @Query("SELECT * FROM events WHERE id = :id")
     fun getEventById(id: Long): Flow<EventEntity?>
+
+    @Delete
+    suspend fun deleteEvent(event: EventEntity)
 
 
 }

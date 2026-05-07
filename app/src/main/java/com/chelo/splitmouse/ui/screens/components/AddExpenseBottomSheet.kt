@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
@@ -49,6 +50,7 @@ import com.chelo.splitmouse.ui.theme.VioletaFuerte
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun AddExpenseBottomSheet(
+    expense: Expense? = null,
     onDismiss: () -> Unit,
     participants: List<Participant>,
     onAddExpenseClick: (Double, String, Long) -> Unit,
@@ -63,6 +65,16 @@ fun AddExpenseBottomSheet(
     var selectedParticipantId by remember { mutableStateOf<Long>(participants[0].id) }
     var isSelected by remember { mutableStateOf(false) }
 
+    expense?.let {
+        amount = it.amount
+        nameExpense = it.description
+        selectedParticipantId = it.payerId
+    }
+    fun clearFields() {
+        amount = 0.0
+        nameExpense = ""
+        selectedParticipantId = participants.firstOrNull()?.id ?: 0L
+    }
 
 
     ModalBottomSheet(
@@ -165,6 +177,8 @@ fun AddExpenseBottomSheet(
             Button(
                 onClick = {
                     onAddExpenseClick(amount, nameExpense, selectedParticipantId)
+                    clearFields()
+                    onDismiss()
                 },
                 enabled = amount > 0 && nameExpense.isNotBlank(),
                 modifier = Modifier
@@ -178,7 +192,7 @@ fun AddExpenseBottomSheet(
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Agregar gasto",
+                    text = if (expense != null) "Actualizar gasto" else "Agregar gasto",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )

@@ -23,4 +23,16 @@ class ExpenseRepositoryImpl(private val expenseDao: ExpenseDao) : ExpenseReposit
         }
 
     }
+
+    override suspend fun deleteExpense(expense: Expense) {
+        expenseDao.deleteExpense(expense.toEntity())
+    }
+
+    override suspend fun updateExpense(expense: Expense) {
+        expenseDao.updateExpense(expense.toEntity())
+    }
+
+    override suspend fun calculateTotalAmount(eventId: Long): Double {
+        return expenseDao.calculateTotalAmount(eventId)
+    }
 }

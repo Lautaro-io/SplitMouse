@@ -1,6 +1,7 @@
 package com.chelo.splitmouse.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chelo.splitmouse.domain.model.Debt
@@ -50,7 +51,7 @@ class EventDetailViewModel(
         }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(4000),
-            EventDetailState(event = null , isLoading = true)
+            EventDetailState(event = null, isLoading = true)
         )
 
 
@@ -95,23 +96,32 @@ class EventDetailViewModel(
         }
     }
 
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                expensesRepository.deleteExpense(expense)
+            } catch (e: Exception) {
+            }
 
-//    val uiState: StateFlow<EventDetailState> =
-//        eventRepository.getEventById(eventId).map { event ->
-//
-//        EventDetailState(event)
-//    }.catch {
-//        emit(EventDetailState(event = null, isError = true, errorMessage = it.message))
-//
-//
-//    }.stateIn(
-//        viewModelScope,
-//        SharingStarted.WhileSubscribed(4000),
-//        initialValue = EventDetailState(event = null, isLoading = true)
-//    )
-//}
+        }
+    }
+
+    fun updateExpense(expense: Expense) {
+        viewModelScope.launch {
+            try {
+                expensesRepository.updateExpense(expense)
+                val newAmount = expensesRepository.calculateTotalAmount(expense.eventId)
+                val eventUpdate =
+                    uiState.value.event?.copy(totalAmount = newAmount) ?: return@launch
+                eventRepository.updateEvent(eventUpdate)
+            } catch (e: Exception) {
+            }
+        }
+
+    }
+
 }
-
+@Immutable
 data class EventDetailState(
     val event: Event?,
     val isLoading: Boolean = true,

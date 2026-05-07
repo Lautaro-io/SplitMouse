@@ -14,12 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCard
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.Checklist
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,9 +39,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
+import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.ui.screens.components.AddExpenseBottomSheet
 import com.chelo.splitmouse.ui.screens.components.AddParticipantDialog
-import com.chelo.splitmouse.ui.screens.components.ContentDetailHeader
+import com.chelo.splitmouse.ui.screens.components.ContentDetail
+import com.chelo.splitmouse.ui.screens.components.DialogRoulette
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
@@ -62,12 +60,15 @@ fun EventDetailScreen(
     val state by viewModel.uiState.collectAsState()
     var showDialogParticipant by remember { mutableStateOf(false) }
     var showBottomModal by remember { mutableStateOf(false) }
+    var showDialogDeleteExpense by remember { mutableStateOf(false) }
     var showDeleteParticipantDialog by remember { mutableStateOf(false) }
+    var showRouletteDialog by remember { mutableStateOf(false) }
     var participantId: Long? by remember { mutableStateOf(null) }
     val bgColor = Brush.verticalGradient(
         0.7f to Color.Transparent,
         1.0f to Pink40
     )
+    var selectedExpense by remember { mutableStateOf<Expense?>(null) }
     BackHandler {
         onBack()
     }
@@ -103,47 +104,7 @@ fun EventDetailScreen(
         },
         floatingActionButton = {
             Column() {
-                if (state.debts.isNotEmpty()) {
-                    Button(
-                        onClick = { navToDebt(viewModel.eventId) },
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.Green.copy(alpha = 0.5f, blue = .2f),
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Icon(Icons.Default.Checklist, contentDescription = "Repartir gastos")
-                            Text("Repartir gastos", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                        }
 
-                    }
-                }
-                if (state.participants.isNotEmpty()) {
-
-                    Button(
-                        onClick = { showBottomModal = true },
-                        modifier = Modifier.padding(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = VioletaFuerte,
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Icon(Icons.Default.AddCard, contentDescription = "Agregar gasto")
-                            Text("Agregar gasto", fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                        }
-
-                    }
-                }
             }
         }
     ) { innerPadding ->
@@ -160,7 +121,9 @@ fun EventDetailScreen(
 
             showDeleteParticipantDialog -> {
                 participantId?.let {
-                    DeleteParticipantDialog(
+                    DeleteDialog(
+                        title = "Eliminar participante",
+                        label = "Estas seguro que quieres eliminar a",
                         onDismiss = { showDeleteParticipantDialog = false },
                         onConfirm = {
                             viewModel.deleteParticipant(it)
@@ -172,6 +135,9 @@ fun EventDetailScreen(
                 }
 
             }
+
+            showRouletteDialog -> DialogRoulette(state.participants) { showRouletteDialog = false }
+
         }
 
 
@@ -188,20 +154,70 @@ fun EventDetailScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 
-                ContentDetailHeader(
+                ContentDetail(
                     detailViewModel = viewModel,
                     onAddParticipantClick = { showDialogParticipant = true },
                     onDeleteParticipant = {
                         showDeleteParticipantDialog = true; participantId = it
-                    })
-                if (showBottomModal) {
-                    AddExpenseBottomSheet(
-                        onDismiss = { showBottomModal = false },
-                        state.participants,
-                        onAddExpenseClick = { amount, description, payerId ->
-                            viewModel.addExpense(amount, description, payerId)
-                            showBottomModal = false
-                        })
+                    },
+                    onExpenseEdit = {
+                        selectedExpense = it
+                        showBottomModal = true
+                        viewModel.updateExpense(it)
+                    },
+                    onExpenseDelete = {
+                        selectedExpense = it
+                        showDialogDeleteExpense = true
+                    },
+                    onButtonRouletteClick = {
+                        showRouletteDialog = true
+                    },
+                    onNewExpenseClick = {
+                        showBottomModal = true
+                    },
+                    onDebtButtonClick = {
+                        navToDebt(viewModel.eventId)
+                    }
+
+                )
+                when {
+                    showBottomModal -> {
+                        AddExpenseBottomSheet(
+                            selectedExpense,
+                            onDismiss = { showBottomModal = false },
+                            state.participants,
+                            onAddExpenseClick = { amount, description, payerId ->
+                                if (selectedExpense != null) {
+                                    val updatedExpense = selectedExpense!!.copy(
+                                        amount = amount,
+                                        description = description,
+                                        payerId = payerId
+                                    )
+                                    viewModel.updateExpense(updatedExpense)
+                                } else {
+                                    viewModel.addExpense(amount, description, payerId)
+                                }
+                                showBottomModal = false
+                            })
+                    }
+
+                    showDialogDeleteExpense ->
+                        selectedExpense?.let { expense ->
+                            DeleteDialog(
+                                onDismiss = {
+                                    showDialogDeleteExpense = false
+                                },
+                                onConfirm = {
+                                    showDialogDeleteExpense = false
+                                    viewModel.deleteExpense(expense)
+                                },
+                                name = expense.description,
+                                title = "Eliminar gasto",
+                                label = "Desea eliminar el gasto ${expense.description}"
+                            )
+                        }
+
+
                 }
 
 
@@ -214,13 +230,19 @@ fun EventDetailScreen(
 }
 
 @Composable
-fun DeleteParticipantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit, name: String) {
+fun DeleteDialog(
+    title: String = "Eliminar Participante",
+    label: String = "",
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+    name: String,
+) {
     AlertDialog(
         containerColor = Color.White,
         onDismissRequest = onDismiss,
-        title = { Text("Eliminar Participante", fontWeight = FontWeight.Bold) },
+        title = { Text(title, fontWeight = FontWeight.Bold) },
         text = {
-            Text("Estas seguro que quieres eliminar a $name")
+            Text(label)
         },
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
@@ -239,23 +261,29 @@ fun DeleteParticipantDialog(onDismiss: () -> Unit, onConfirm: () -> Unit, name: 
 @Composable
 fun TextEmptyParticipants(text: String, modifier: Modifier = Modifier) {
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painterResource(R.drawable.ic_cash),
-                modifier = Modifier.size(64.dp),
-                contentDescription = "Agrega nuevos participantes.",
-                tint = VioletaFuerte
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            painterResource(R.drawable.ic_cash),
+            modifier = Modifier.size(64.dp),
+            contentDescription = "Agrega nuevos participantes.",
+            tint = VioletaFuerte
+        )
 
-            Text(text, fontWeight = FontWeight.Bold, fontSize = 24.sp, color = BlackPurple, modifier= Modifier.fillMaxWidth() , textAlign = TextAlign.Center    )
-        }
-
+        Text(
+            text,
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+            color = BlackPurple,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+    }
 
 
 }
