@@ -216,6 +216,8 @@ fun MainContent(
                                 })
 
                         }
+                        eventSelected = null
+
 
                     })
             }
