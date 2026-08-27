@@ -26,10 +26,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.ui.screens.TextEmptyParticipants
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
@@ -73,7 +75,7 @@ fun ContentDetail(
                 )
 
                 Text(
-                    "Gastos",
+                    stringResource(R.string.expenses_label),
                     color = VioletaFuerte,
                     fontWeight = FontWeight.ExtraBold,
                     fontSize = 20.sp,
@@ -89,12 +91,12 @@ fun ContentDetail(
                 ) {
                     Icon(
                         Icons.Default.Info,
-                        contentDescription = "Informacion",
+                        contentDescription = stringResource(R.string.info_icon_desc),
                         tint = VioletaFuerte
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        "Dezliza para editar o eliminar",
+                        stringResource(R.string.swipe_info),
                         color = VioletaFuerte,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold,
@@ -108,9 +110,9 @@ fun ContentDetail(
             }
             when {
                 participants.isEmpty() ->
-                    item { TextEmptyParticipants("Agrega nuevos participantes.") }
+                    item { TextEmptyParticipants(stringResource(R.string.add_participants_msg)) }
 
-                state.expenses.isEmpty() -> item { TextEmptyParticipants("Agrega nuevos gastos para empezar a repartir.") }
+                state.expenses.isEmpty() -> item { TextEmptyParticipants(stringResource(R.string.add_expenses_msg)) }
                 else -> {
 
                     items(state.expenses, key = { it.id }) { expense ->
@@ -149,10 +151,10 @@ fun ContentDetail(
                             ) {
                                 Icon(
                                     Icons.Default.Checklist,
-                                    contentDescription = "Repartir gastos"
+                                    contentDescription = stringResource(R.string.split_expenses_icon_desc)
                                 )
                                 Text(
-                                    "Repartir gastos",
+                                    stringResource(R.string.split_expenses_action),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )
@@ -180,10 +182,10 @@ fun ContentDetail(
                             ) {
                                 Icon(
                                     Icons.Default.AddCard,
-                                    contentDescription = "Agregar gasto"
+                                    contentDescription = stringResource(R.string.add_expense_title)
                                 )
                                 Text(
-                                    "Agregar gasto",
+                                    stringResource(R.string.add_expense_title),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 16.sp
                                 )

@@ -25,11 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.formatFecha
 import com.chelo.splitmouse.ui.theme.BlackPurple
@@ -62,7 +64,7 @@ fun CardEvent(
                     onLongPress(event.id)
                 }
             ),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(1.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
@@ -86,7 +88,7 @@ fun CardEvent(
                 )
                 Box {
                     IconButton(onClick = onDotsClick) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu_icon_desc))
                     }
                     EventActionsMenu(
                         expanded = menuExpanded,
@@ -127,7 +129,7 @@ fun CardEvent(
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("GASTADO")
+                    Text(stringResource(R.string.spent_label))
                     Text(
                         text = event.totalAmount.toArgentineCurrency(),
                         fontWeight = FontWeight.ExtraBold,

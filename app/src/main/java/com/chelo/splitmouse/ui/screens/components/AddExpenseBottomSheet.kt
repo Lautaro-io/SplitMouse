@@ -36,11 +36,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.ui.theme.Pink40
@@ -92,14 +94,14 @@ fun AddExpenseBottomSheet(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                "Agregar gasto",
+                stringResource(R.string.add_expense_title),
                 fontWeight = FontWeight.Bold,
                 fontSize = 40.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
             Text(
-                "Lleva la cuenta de cada juntada con tus amigos.",
+                stringResource(R.string.event_description_subtitle),
                 fontSize = 20.sp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -108,7 +110,7 @@ fun AddExpenseBottomSheet(
                 color = Color.Gray
             )
             Text(
-                "Quien pago?",
+                stringResource(R.string.who_paid_label),
                 fontWeight = FontWeight.ExtraBold,
                 color = VioletaFuerte,
                 fontSize = 24.sp,
@@ -121,7 +123,7 @@ fun AddExpenseBottomSheet(
                 if (participants.isEmpty()) {
                     item {
                         Text(
-                            "Debe agregar al menos un participante.",
+                            stringResource(R.string.at_least_one_participant_error),
                             fontWeight = FontWeight.SemiBold,
                             color = Color.Red,
                             fontSize = 18.sp,
@@ -155,15 +157,15 @@ fun AddExpenseBottomSheet(
                 }
             }
             PurpleTextField(
-                text = "Nombre del Producto",
-                placeholder = "Coca Cola",
+                text = stringResource(R.string.product_name_label),
+                placeholder = stringResource(R.string.product_name_placeholder),
                 value = nameExpense,
                 onValueChange = { nameExpense = it },
                 leadingIcon = Icons.Default.ShoppingBag
             )
             PurpleTextField(
-                text = "Valor",
-                placeholder = "$5.000",
+                text = stringResource(R.string.value_label),
+                placeholder = stringResource(R.string.value_placeholder),
                 value = amount.toInt().toString(),
                 onValueChange = { amount = it.toDouble() },
                 leadingIcon = Icons.Default.AttachMoney,
@@ -192,7 +194,7 @@ fun AddExpenseBottomSheet(
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = if (expense != null) "Actualizar gasto" else "Agregar gasto",
+                    text = if (expense != null) stringResource(R.string.update_expense_action) else stringResource(R.string.add_expense_title),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -202,7 +204,7 @@ fun AddExpenseBottomSheet(
 
             TextButton(onClick = onDismiss) {
                 Text(
-                    "Cancelar",
+                    stringResource(R.string.cancel_action),
                     color = Purple40
                 )
             }

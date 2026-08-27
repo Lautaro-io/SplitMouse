@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.chelo.splitmouse.R
@@ -48,13 +49,13 @@ fun ButtonRoulette(onClick: () -> Unit) {
                     .background(Yellow),
                 contentAlignment = Alignment.Center
             ) {
-                Image(painterResource(R.drawable.ic_dice), contentDescription = "Dado", Modifier.size(48.dp))
+                Image(painterResource(R.drawable.ic_dice), contentDescription = stringResource(R.string.dice_icon_desc), Modifier.size(48.dp))
             }
             Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 4.dp)) {
-                Text("ROULETTE", fontWeight = FontWeight.SemiBold )
-                Text("Deja a la suerte quien paga!")
+                Text(stringResource(R.string.roulette_label), fontWeight = FontWeight.SemiBold )
+                Text(stringResource(R.string.roulette_title))
             }
-            TextButton(onClick = onClick) { Text("JUGAR AHORA>", color = BlackPurple, fontWeight = FontWeight.Bold) }
+            TextButton(onClick = onClick) { Text(stringResource(R.string.play_now_action), color = BlackPurple, fontWeight = FontWeight.Bold) }
         }
     }
 }

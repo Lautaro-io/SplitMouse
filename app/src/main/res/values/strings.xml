@@ -1,3 +1,93 @@
 <resources>
     <string name="app_name">SplitMouse</string>
+    <string name="new_event">Nuevo Evento</string>
+    <string name="update_event">Actualizar evento</string>
+    <string name="event_description_subtitle">Lleva la cuenta de cada juntada con tus amigos.</string>
+    <string name="event_name_label">Nombre del evento</string>
+    <string name="event_name_placeholder">Asado con amigos</string>
+    <string name="event_date_label">¿Cuándo es?</string>
+    <string name="event_date_placeholder">Hoy, 12:00</string>
+    <string name="event_description_label">Descripción (Opcional…)</string>
+    <string name="event_description_placeholder">Describe algo del evento</string>
+    <string name="update_action">Actualizar</string>
+    <string name="create_event_action">Crear Evento</string>
+    <string name="cancel_action">Cancelar</string>
+
+    <!-- Main Screen -->
+    <string name="active_events_title">Eventos Activos</string>
+    <string name="view_less">Ver Menos</string>
+    <string name="view_more">Ver Más</string>
+    <string name="delete_event_title">Eliminar evento</string>
+    <string name="delete_event_confirmation">¿Desea eliminar %1$s?</string>
+    <string name="event_deleted_msg">Evento eliminado</string>
+    <string name="app_icon_desc">Icono de la aplicación</string>
+
+    <!-- Empty Event Content -->
+    <string name="empty_events_title">No hay eventos aun</string>
+    <string name="empty_events_description">Aun no tienes eventos activos. Crea uno para empezar a organizar tus gastos!</string>
+    <string name="create_new_event">Crear nuevo evento</string>
+    <string name="welcome_msg">¡Bienvenido a Split Mouse!</string>
+    <string name="welcome_subtitle">Empezá a organizar tus juntadas y repartir gastos fácilmente.</string>
+    <string name="add_event_icon_desc">Agregar evento</string>
+    <string name="empty_event_icon_desc">Evento vacío</string>
+
+    <!-- Common Actions -->
+    <string name="delete_action">Eliminar</string>
+    <string name="edit_action">Editar</string>
+    <string name="accept_action">Aceptar</string>
+
+    <!-- Card Event -->
+    <string name="spent_label">GASTADO</string>
+    <string name="menu_icon_desc">Menú</string>
+
+    <!-- Card Add Event -->
+    <string name="ready_for_another_outing">¿Listos para otra salida?</string>
+    <string name="organize_expenses_msg">Organiza gastos, divide la cuenta y disfruta el momento</string>
+
+    <!-- Dialogs & Menus -->
+    <string name="delete_participant_title">Eliminar Participante</string>
+    <string name="add_participant_action">Agregar</string>
+    <string name="edit_icon_desc">Editar</string>
+    <string name="delete_icon_desc">Eliminar</string>
+
+    <!-- Roulette -->
+    <string name="roulette_label">RULETA</string>
+    <string name="roulette_title">¡Deja a la suerte quien paga!</string>
+    <string name="roulette_title_dialog">Ruleta de la suerte</string>
+    <string name="roulette_description">Uno gira, uno paga, ¿quién será el suertudo?</string>
+    <string name="play_now_action">JUGAR AHORA ></string>
+    <string name="dice_icon_desc">Dado</string>
+    <string name="spin_action">¡GIRAR!</string>
+    <string name="winner_pays_all">%1$s paga todo!</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="close_dialog_desc">Cerrar diálogo</string>
+    <string name="cancel_uppercase">CANCELAR</string>
+
+    <!-- Event Detail -->
+    <string name="event_detail_title">Detalle del Evento</string>
+    <string name="delete_participant_confirmation">¿Estás seguro que quieres eliminar a %1$s?</string>
+    <string name="delete_expense_title">Eliminar gasto</string>
+    <string name="delete_expense_confirmation">¿Desea eliminar el gasto %1$s?</string>
+    <string name="add_participants_icon_desc">Agrega nuevos participantes</string>
+    <!-- Add Participant Dialog -->
+    <string name="add_participant_title">Agregar Participante</string>
+    <string name="name_label">Nombre</string>
+    <string name="name_placeholder">Ej: Juan Perez</string>
+    <!-- Add Expense Bottom Sheet -->
+    <string name="add_expense_title">Agregar gasto</string>
+    <string name="who_paid_label">¿Quién pagó?</string>
+    <string name="at_least_one_participant_error">Debe agregar al menos un participante.</string>
+    <string name="product_name_label">Nombre del Producto</string>
+    <string name="product_name_placeholder">Coca Cola</string>
+    <string name="value_label">Valor</string>
+    <string name="value_placeholder">$5.000</string>
+    <string name="update_expense_action">Actualizar gasto</string>
+    <!-- Content Detail -->
+    <string name="expenses_label">Gastos</string>
+    <string name="swipe_info">Desliza para editar o eliminar</string>
+    <string name="info_icon_desc">Información</string>
+    <string name="add_participants_msg">Agrega nuevos participantes.</string>
+    <string name="add_expenses_msg">Agrega nuevos gastos para empezar a repartir.</string>
+    <string name="split_expenses_action">Repartir gastos</string>
+    <string name="split_expenses_icon_desc">Repartir gastos</string>
 </resources>

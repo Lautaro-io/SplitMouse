@@ -10,6 +10,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.chelo.splitmouse.R
 
 @Composable
 fun EventActionsMenu(
@@ -26,17 +28,17 @@ fun EventActionsMenu(
 
     ) {
         DropdownMenuItem(
-            text = { Text("Editar") },
+            text = { Text(stringResource(R.string.edit_action)) },
             onClick = { onEdit(); onDismiss() },
-            leadingIcon = { Icon(Icons.Default.Edit, contentDescription = "Editar") }
+            leadingIcon = { Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.edit_icon_desc)) }
         )
         DropdownMenuItem(
-            text = { Text("Eliminar", color = Color.Red) },
+            text = { Text(stringResource(R.string.delete_action), color = Color.Red) },
             onClick = { onDelete(); onDismiss() },
             leadingIcon = {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "ELiminar",
+                    contentDescription = stringResource(R.string.delete_icon_desc),
                     tint = Color.Red
                 )
             }

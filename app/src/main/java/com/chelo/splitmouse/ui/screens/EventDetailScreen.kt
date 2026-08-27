@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -92,7 +93,7 @@ fun EventDetailScreen(
                 }
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    "Detalle del Evento",
+                    stringResource(R.string.event_detail_title),
                     fontSize = 24.sp,
                     fontStyle = FontStyle.Normal,
                     color = VioletaFuerte,
@@ -121,16 +122,16 @@ fun EventDetailScreen(
 
             showDeleteParticipantDialog -> {
                 participantId?.let {
+                    val name = state.participants.find { participant -> participant.id == participantId }?.name ?: ""
                     DeleteDialog(
-                        title = "Eliminar participante",
-                        label = "Estas seguro que quieres eliminar a",
+                        title = stringResource(R.string.delete_participant_title),
+                        label = stringResource(R.string.delete_participant_confirmation, name),
                         onDismiss = { showDeleteParticipantDialog = false },
                         onConfirm = {
                             viewModel.deleteParticipant(it)
                             showDeleteParticipantDialog = false
                         },
-                        name = (state.participants.find { participant -> participant.id == participantId }?.name
-                            ?: "")
+                        name = name
                     )
                 }
 
@@ -212,8 +213,8 @@ fun EventDetailScreen(
                                     viewModel.deleteExpense(expense)
                                 },
                                 name = expense.description,
-                                title = "Eliminar gasto",
-                                label = "Desea eliminar el gasto ${expense.description}"
+                                title = stringResource(R.string.delete_expense_title),
+                                label = stringResource(R.string.delete_expense_confirmation, expense.description)
                             )
                         }
 
@@ -231,7 +232,7 @@ fun EventDetailScreen(
 
 @Composable
 fun DeleteDialog(
-    title: String = "Eliminar Participante",
+    title: String = stringResource(R.string.delete_participant_title),
     label: String = "",
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
@@ -246,12 +247,12 @@ fun DeleteDialog(
         },
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
-                Text("Eliminar", color = Color.Red)
+                Text(stringResource(R.string.delete_action), color = Color.Red)
             }
         },
         dismissButton = {
             TextButton(onClick = { onDismiss() }) {
-                Text("Cancelar")
+                Text(stringResource(R.string.cancel_action))
             }
         }
     )
@@ -271,7 +272,7 @@ fun TextEmptyParticipants(text: String, modifier: Modifier = Modifier) {
         Icon(
             painterResource(R.drawable.ic_cash),
             modifier = Modifier.size(64.dp),
-            contentDescription = "Agrega nuevos participantes.",
+            contentDescription = stringResource(R.string.add_participants_icon_desc),
             tint = VioletaFuerte
         )
 

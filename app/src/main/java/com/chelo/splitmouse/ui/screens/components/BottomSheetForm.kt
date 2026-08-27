@@ -31,11 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
@@ -96,14 +98,14 @@ fun BottomForm(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
-                "Nuevo Evento",
+                if (event == null) stringResource(R.string.new_event) else stringResource(R.string.update_event),
                 fontWeight = FontWeight.Bold,
                 fontSize = 40.sp,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
             Text(
-                "Lleva la cuenta de cada juntada con tus amigos.",
+                stringResource(R.string.event_description_subtitle),
                 fontSize = 20.sp,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,15 +114,15 @@ fun BottomForm(
                 color = Color.Gray
             )
             PurpleTextField(
-                text = "Nombre del evento",
-                placeholder = "Asado con amigos",
+                text = stringResource(R.string.event_name_label),
+                placeholder = stringResource(R.string.event_name_placeholder),
                 value = state.name,
                 onValueChange = { viewmodel.updateFormState(FieldType.NAME, it) },
                 trailingIcon = Icons.Default.Preview
             )
             PurpleTextField(
-                text = "Cuando es?",
-                placeholder = "Hoy, 12:00",
+                text = stringResource(R.string.event_date_label),
+                placeholder = stringResource(R.string.event_date_placeholder),
                 value = state.date,
                 readOnly = true,
                 onValueChange = { },
@@ -136,8 +138,8 @@ fun BottomForm(
 
 
             PurpleTextField(
-                text = "Descripcion (Opcional.. )",
-                placeholder = "Describe algo del evento",
+                text = stringResource(R.string.event_description_label),
+                placeholder = stringResource(R.string.event_description_placeholder),
                 value = state.description ?: "",
                 onValueChange = { viewmodel.updateFormState(FieldType.DESCRIPTION, it) },
                 trailingIcon = null,
@@ -160,7 +162,7 @@ fun BottomForm(
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = if (event != null) "Actualizar" else "Crear Evento",
+                    text = if (event != null) stringResource(R.string.update_action) else stringResource(R.string.create_event_action),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -170,7 +172,7 @@ fun BottomForm(
 
             TextButton(onClick = onDismiss) {
                 Text(
-                    "Cancelar",
+                    stringResource(R.string.cancel_action),
                     color = Purple40
                 )
             }
