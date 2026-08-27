@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">SplitMouse</string>
+    <string name="new_event">New Event</string>
+    <string name="update_event">Update Event</string>
+    <string name="event_description_subtitle">Keep track of every hangout with your friends.</string>
+    <string name="event_name_label">Event name</string>
+    <string name="event_name_placeholder">BBQ with friends</string>
+    <string name="event_date_label">When is it?</string>
+    <string name="event_date_placeholder">Today, 12:00</string>
+    <string name="event_description_label">Description (Optional…)</string>
+    <string name="event_description_placeholder">Describe something about the event</string>
+    <string name="update_action">Update</string>
+    <string name="create_event_action">Create Event</string>
+    <string name="cancel_action">Cancel</string>
+
+    <!-- Main Screen -->
+    <string name="active_events_title">Active Events</string>
+    <string name="view_less">View Less</string>
+    <string name="view_more">View More</string>
+    <string name="delete_event_title">Delete Event</string>
+    <string name="delete_event_confirmation">Do you want to delete %1$s?</string>
+    <string name="event_deleted_msg">Event deleted</string>
+    <string name="app_icon_desc">App Icon</string>
+
+    <!-- Empty Event Content -->
+    <string name="empty_events_title">No events yet</string>
+    <string name="empty_events_description">You don\'t have active events yet. Create one to start organizing your expenses!</string>
+    <string name="create_new_event">Create new event</string>
+    <string name="welcome_msg">Welcome to Split Mouse!</string>
+    <string name="welcome_subtitle">Start organizing your hangouts and split expenses easily.</string>
+    <string name="add_event_icon_desc">Add event</string>
+    <string name="empty_event_icon_desc">Empty event</string>
+
+    <!-- Common Actions -->
+    <string name="delete_action">Delete</string>
+    <string name="edit_action">Edit</string>
+    <string name="accept_action">Accept</string>
+
+    <!-- Card Event -->
+    <string name="spent_label">SPENT</string>
+    <string name="menu_icon_desc">Menu</string>
+
+    <!-- Card Add Event -->
+    <string name="ready_for_another_outing">Ready for another outing?</string>
+    <string name="organize_expenses_msg">Organize expenses, split the bill and enjoy the moment</string>
+
+    <!-- Dialogs & Menus -->
+    <string name="delete_participant_title">Delete Participant</string>
+    <string name="add_participant_action">Add</string>
+    <string name="edit_icon_desc">Edit</string>
+    <string name="delete_icon_desc">Delete</string>
+
+    <!-- Roulette -->
+    <string name="roulette_title">Let luck decide who pays!</string>
+    <string name="spin_action">SPIN!</string>
+    <!-- Event Detail -->
+    <string name="event_detail_title">Event Detail</string>
+    <string name="delete_participant_confirmation">Are you sure you want to delete %1$s?</string>
+    <string name="delete_expense_title">Delete expense</string>
+    <string name="delete_expense_confirmation">Do you want to delete the expense %1$s?</string>
+    <string name="add_participants_icon_desc">Add new participants</string>
+    <!-- Add Participant Dialog -->
+    <string name="add_participant_title">Add Participant</string>
+    <string name="name_label">Name</string>
+    <string name="name_placeholder">e.g. John Doe</string>
+    <!-- Add Expense Bottom Sheet -->
+    <string name="add_expense_title">Add expense</string>
+    <string name="who_paid_label">Who paid?</string>
+    <string name="at_least_one_participant_error">You must add at least one participant.</string>
+    <string name="product_name_label">Product Name</string>
+    <string name="product_name_placeholder">Coke</string>
+    <string name="value_label">Value</string>
+    <string name="value_placeholder">$5,000</string>
+    <string name="update_expense_action">Update expense</string>
+    <!-- Content Detail -->
+    <string name="expenses_label">Expenses</string>
+    <string name="swipe_info">Swipe to edit or delete</string>
+    <string name="info_icon_desc">Information</string>
+    <string name="add_participants_msg">Add new participants.</string>
+    <string name="add_expenses_msg">Add new expenses to start splitting.</string>
+    <string name="split_expenses_action">Split expenses</string>
+    <string name="split_expenses_icon_desc">Split expenses</string>
+</resources>

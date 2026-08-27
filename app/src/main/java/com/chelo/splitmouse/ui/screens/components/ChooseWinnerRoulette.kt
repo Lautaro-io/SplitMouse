@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
@@ -132,7 +133,7 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
             IconButton(onClick = onDismiss) {
                 Icon(
                     Icons.Default.Close,
-                    contentDescription = "Cerrar dialog",
+                    contentDescription = stringResource(R.string.close_dialog_desc),
                     modifier = Modifier.align(Alignment.TopEnd)
                 )
             }
@@ -147,14 +148,14 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        "Ruleta de la suerte",
+                        stringResource(R.string.roulette_title_dialog),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.ExtraBold,
                         color = BlackPurple
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        "Uno gira , uno paga , Quien sera el suertudo?",
+                        stringResource(R.string.roulette_description),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
                         color = BlackPurple
@@ -213,7 +214,7 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                                 contentColor = VioletaFuerte
                             )
                         ) {
-                            Text("CANCELAR", fontWeight = FontWeight.Bold)
+                            Text(stringResource(R.string.cancel_uppercase), fontWeight = FontWeight.Bold)
                         }
                         Button(
                             onClick = {
@@ -235,7 +236,7 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                             ),
                             modifier = Modifier.padding(top = 24.dp)
                         ) {
-                            Text("¡GIRAR!")
+                            Text(stringResource(R.string.spin_action))
                         }
                     }
 
@@ -263,8 +264,8 @@ fun CardWinner(name: String = "Marco") {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("GAME OVER", fontSize = 18.sp)
-            Text("$name paga todo!", fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.game_over), fontSize = 18.sp)
+            Text(stringResource(R.string.winner_pays_all, name), fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
 
         }
     }

@@ -30,7 +30,7 @@ fun AddParticipantDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
             )
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(name) }) {
+            TextButton(onClick = { onConfirm(name)}, enabled = name.isNotBlank()) {
                 Text("Agregar")
             }
         },

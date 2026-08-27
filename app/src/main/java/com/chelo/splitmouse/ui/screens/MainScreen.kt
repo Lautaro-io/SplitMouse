@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,7 +71,7 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
             ) {
 
                 Text(
-                    "Splitmouse",
+                    stringResource(R.string.app_name),
                     fontSize = 32.sp,
                     color = VioletaFuerte,
                     fontWeight = FontWeight.SemiBold,
@@ -78,7 +79,7 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                 )
                 Icon(
                     painterResource(R.drawable.ic_app),
-                    contentDescription = "Icon App",
+                    contentDescription = stringResource(R.string.app_icon_desc),
                     tint = VioletaFuerte,
                     modifier = Modifier.size(64.dp)
                 )
@@ -138,7 +139,7 @@ fun MainContent(
 
                 LazyColumn() {
                     item {
-                        CardAddEvent(onButtonClick = { showBottomModal = true })
+                        CardAddEvent(onButtonClick = {eventSelected = null ; showBottomModal = true })
                     }
                     item {
                         Row(
@@ -149,14 +150,14 @@ fun MainContent(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "Eventos Activos",
+                                stringResource(R.string.active_events_title),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 28.sp,
                                 color = BlackPurple
                             )
                             TextButton(onClick = { itemsCount = events.size }) {
                                 Text(
-                                    text = if (itemsCount == events.size) "Ver Menos" else "Ver Más",
+                                    text = if (itemsCount == events.size) stringResource(R.string.view_less) else stringResource(R.string.view_more),
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 18.sp,
                                     color = Purple40
@@ -199,8 +200,8 @@ fun MainContent(
         eventSelected?.let { event ->
             if (showDeleteDialog) {
                 DeleteDialog(
-                    title = "Eliminar evento",
-                    label = "Desea eliminar ${event.name}",
+                    title = stringResource(R.string.delete_event_title),
+                    label = stringResource(R.string.delete_event_confirmation, event.name),
                     onDismiss = { showDeleteDialog = false; eventSelected = null },
                     name = "",
                     onConfirm = {
@@ -210,7 +211,7 @@ fun MainContent(
                                 onSuccess = {
                                     showDeleteDialog = false; Toast.makeText(
                                     localContext,
-                                    "Evento eliminado",
+                                    localContext.getString(R.string.event_deleted_msg),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 })

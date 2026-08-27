@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -74,7 +75,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                 ) {
                     Icon(
                         painterResource(R.drawable.ic_pergamino),
-                        contentDescription = "Evento vacio",
+                        contentDescription = stringResource(R.string.empty_event_icon_desc),
                         tint = VioletaFuerte,
                         modifier = Modifier.size(120.dp)
                     )
@@ -97,9 +98,9 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
 
             }
         }
-        Text("No hay eventos aun", fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text(stringResource(R.string.empty_events_title), fontWeight = FontWeight.Bold, fontSize = 24.sp)
         Text(
-            "Aun no tienes eventos activos. Crea uno para empezar a organizar tus gastos!",
+            stringResource(R.string.empty_events_description),
             color = Color.Gray,
             fontSize = 16.sp,
             textAlign = TextAlign.Center
@@ -122,10 +123,10 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                 ) {
                     Icon(
                         Icons.Default.Add,
-                        contentDescription = "Agregar evento",
+                        contentDescription = stringResource(R.string.add_event_icon_desc),
                         tint = Color.White
                     )
-                    Text("Crear nuevo evento", color = Color.White , fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.create_new_event), color = Color.White , fontWeight = FontWeight.Bold)
                 }
 
             }
@@ -155,9 +156,9 @@ fun CardEmptyEvent(){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PersonalizedText("Bienvenido a Split Mouse !", listOf("Split", "Mouse"), fontSize = 32)
+            PersonalizedText(stringResource(R.string.welcome_msg), listOf("Split", "Mouse"), fontSize = 32)
             Text(
-                "Empeza a organizar tus juntadas y repartir gastos facilmente.",
+                stringResource(R.string.welcome_subtitle),
                 modifier = Modifier.padding(vertical = 24.dp),
                 color = Color.Gray,
                 fontSize = 18.sp,

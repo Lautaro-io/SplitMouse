@@ -13,11 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.ui.formatFecha
@@ -50,7 +52,7 @@ fun ContentDetailHeader(
         ) {
             Icon(
                 Icons.Default.CalendarMonth,
-                contentDescription = "Fecha del evento",
+                contentDescription = stringResource(R.string.event_date_label),
                 tint = VioletaFuerte
             )
             Spacer(Modifier.width(4.dp))

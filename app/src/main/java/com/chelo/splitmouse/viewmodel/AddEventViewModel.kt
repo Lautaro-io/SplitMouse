@@ -57,6 +57,12 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
             }
         }
     }
+
+    private fun resetForm(){
+        _formState.update {
+            EventFormState()
+        }
+    }
     fun validateForm(): Boolean {
         val validName = _formState.value.name.isNotBlank()
         val validDate = _formState.value.date.isNotBlank()
@@ -76,6 +82,7 @@ class AddEventViewModel(private val repo: EventRepository) : ViewModel() {
                     date = event.date,
                 )
                 repo.updateEvent(eventToUpdate)
+                resetForm()
                 onSuccess()
             }catch (e : Exception){
 
