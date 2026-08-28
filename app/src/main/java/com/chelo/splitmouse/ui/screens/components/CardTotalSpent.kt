@@ -16,10 +16,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Purple40
@@ -54,8 +56,8 @@ fun CardTotalSpent(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Total Spent",
-                    color = Color.LightGray,
+                    stringResource(R.string.total_spent_label),
+                    color = Color.White.copy(alpha = 0.7f),
                     fontSize = 18.sp,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -69,7 +71,8 @@ fun CardTotalSpent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 24.dp),
-                    textAlign = TextAlign.Start
+                    textAlign = TextAlign.Start,
+                    color = Color.White
                 )
                 Row(
                     modifier = Modifier
@@ -82,7 +85,7 @@ fun CardTotalSpent(
                     Text(
                         "REPARTIENDO EQUITATIVAMENTE",
                         fontWeight = FontWeight.Bold,
-                        color = Color.LightGray
+                        color = Color.White.copy(alpha = 0.7f)
                     )
                 }
 

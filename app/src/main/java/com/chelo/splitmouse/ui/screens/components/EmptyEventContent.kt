@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,15 +40,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Pink80
-import com.chelo.splitmouse.ui.theme.Purple80
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Preview(showBackground = true)
 @Composable
 fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
-    val btnBg = Brush.horizontalGradient(listOf(VioletaFuerte, Purple80))
+    val btnBg = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary))
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +55,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
             modifier = Modifier
                 .size(240.dp)
                 .clip(CircleShape)
-                .background(Purple80.copy(alpha = 0.1f))
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f))
         ) {
             Card(
                 modifier = Modifier
@@ -66,7 +63,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                     .padding(8.dp)
                     .rotate(-10f),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,7 +73,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                     Icon(
                         painterResource(R.drawable.ic_pergamino),
                         contentDescription = stringResource(R.string.empty_event_icon_desc),
-                        tint = VioletaFuerte,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(120.dp)
                     )
                     HorizontalDivider(
@@ -84,7 +81,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                             .clip(RoundedCornerShape(32.dp))
                             .width(30.dp),
                         thickness = 4.dp,
-                        color = Pink80.copy(0.4f)
+                        color = MaterialTheme.colorScheme.primary.copy(0.4f)
                     )
                     Spacer(Modifier.height(4.dp))
                     HorizontalDivider(
@@ -92,16 +89,16 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
                             .clip(RoundedCornerShape(32.dp))
                             .width(20.dp),
                         thickness = 4.dp,
-                        color = Pink80.copy(0.4f)
+                        color = MaterialTheme.colorScheme.primary.copy(0.4f)
                     )
                 }
 
             }
         }
-        Text(stringResource(R.string.empty_events_title), fontWeight = FontWeight.Bold, fontSize = 24.sp)
+        Text(stringResource(R.string.empty_events_title), fontWeight = FontWeight.Bold, fontSize = 24.sp, color = MaterialTheme.colorScheme.onSurface)
         Text(
             stringResource(R.string.empty_events_description),
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 16.sp,
             textAlign = TextAlign.Center
         )
@@ -139,7 +136,7 @@ fun EmptyEventContent(onButtonClick:()-> Unit = {}) {
 fun CardEmptyEvent(){
     val bgColor = Brush.horizontalGradient(
         0.7f to Color.Transparent,
-        1.0f to Pink40
+        1.0f to MaterialTheme.colorScheme.surfaceVariant
     )
     Surface(
         modifier = Modifier
@@ -148,7 +145,7 @@ fun CardEmptyEvent(){
         ,
         shape = RoundedCornerShape(24.dp),
         tonalElevation = 0.1.dp,
-
+        color = MaterialTheme.colorScheme.surface
 
         ) {
         Column(
@@ -160,7 +157,7 @@ fun CardEmptyEvent(){
             Text(
                 stringResource(R.string.welcome_subtitle),
                 modifier = Modifier.padding(vertical = 24.dp),
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 18.sp,
             )
 

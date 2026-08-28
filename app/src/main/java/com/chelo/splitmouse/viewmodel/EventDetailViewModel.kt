@@ -38,7 +38,6 @@ class EventDetailViewModel(
     val uiState: StateFlow<EventDetailState> =
         combine(event, participants, expenses) { event, participants, expenses ->
             val calculatedDebts = getEventSettlementUseCase(participants, expenses)
-            Log.i("CHELO", calculatedDebts.toString())
             EventDetailState(
                 event,
                 participants = participants,
@@ -70,8 +69,6 @@ class EventDetailViewModel(
             if (amount <= 0 || description.isEmpty()) throw Exception("Invalid data")
             try {
                 val expense = Expense(0, amount, description, eventId, playerId)
-                Log.i("CHELO", expense.toString())
-                Log.i("CHELO", uiState.value.debts.toString())
                 expensesRepository.addExpense(expense)
                 val event = uiState.value.event
                 eventRepository.updateEvent(
@@ -79,7 +76,6 @@ class EventDetailViewModel(
                 )
 
             } catch (e: Exception) {
-                Log.i("CHELO", e.message.toString())
                 e.printStackTrace()
             }
         }
@@ -89,6 +85,9 @@ class EventDetailViewModel(
         viewModelScope.launch {
             try {
                 participantRepository.deleteParticipant(participantId)
+                val newTotal = expensesRepository.calculateTotalAmount(eventId)
+                val event = uiState.value.event ?: return@launch
+                eventRepository.updateEvent(event.copy(totalAmount = newTotal))
             } catch (e: Exception) {
                 e.printStackTrace()
                 Log.i("CHELO", e.message.toString())
@@ -100,13 +99,15 @@ class EventDetailViewModel(
         viewModelScope.launch {
             try {
                 expensesRepository.deleteExpense(expense)
+                val event = uiState.value.event ?: return@launch
+                eventRepository.updateEvent(event.copy(totalAmount = event.totalAmount - expense.amount))
             } catch (e: Exception) {
+                e.printStackTrace()
             }
-
         }
     }
 
-    fun updateExpense(expense: Expense) {
+    fun updateExpense(expense: Expense, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             try {
                 expensesRepository.updateExpense(expense)
@@ -114,13 +115,16 @@ class EventDetailViewModel(
                 val eventUpdate =
                     uiState.value.event?.copy(totalAmount = newAmount) ?: return@launch
                 eventRepository.updateEvent(eventUpdate)
+                onSuccess()
             } catch (e: Exception) {
+
             }
         }
 
     }
 
 }
+
 @Immutable
 data class EventDetailState(
     val event: Event?,

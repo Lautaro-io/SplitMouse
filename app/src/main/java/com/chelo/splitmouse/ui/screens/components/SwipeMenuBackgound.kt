@@ -13,10 +13,10 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -29,13 +29,13 @@ fun SwipeMenuBackground(onEdit: () -> Unit, onDelete: () -> Unit) {
     ) {
         IconButton(
             onClick = onEdit,
-            modifier = Modifier.background(Color.Blue, CircleShape)
+            modifier = Modifier.background(MaterialTheme.colorScheme.primary, CircleShape)
         ) {
-            Icon(Icons.Default.Edit, contentDescription = "Editar", tint = Color.White)
+            Icon(Icons.Default.Edit, contentDescription = "Editar", tint = MaterialTheme.colorScheme.onPrimary)
         }
         Spacer(modifier = Modifier.width(16.dp))
-        IconButton(onClick = onDelete, modifier = Modifier.background(Color.Red, CircleShape)) {
-            Icon(Icons.Default.Delete, contentDescription = "Eliminar", tint = Color.White)
+        IconButton(onClick = onDelete, modifier = Modifier.background(MaterialTheme.colorScheme.error, CircleShape)) {
+            Icon(Icons.Default.Delete, contentDescription = "Eliminar", tint = MaterialTheme.colorScheme.onError)
 
         }
     }

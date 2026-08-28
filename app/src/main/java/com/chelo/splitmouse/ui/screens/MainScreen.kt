@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,10 +45,6 @@ import com.chelo.splitmouse.ui.screens.components.BottomForm
 import com.chelo.splitmouse.ui.screens.components.CardAddEvent
 import com.chelo.splitmouse.ui.screens.components.CardEvent
 import com.chelo.splitmouse.ui.screens.components.EmptyEventContent
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Purple40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -55,7 +52,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koinViewModel()) {
     val bgColor = Brush.verticalGradient(
         0.3f to Color.Transparent,
-        1.0f to Pink40
+        1.0f to MaterialTheme.colorScheme.surfaceVariant
     )
 
     Scaffold(
@@ -73,14 +70,14 @@ fun MainScreen(navigateToDetail: (Long) -> Unit, viewmodel: MainViewModel = koin
                 Text(
                     stringResource(R.string.app_name),
                     fontSize = 32.sp,
-                    color = VioletaFuerte,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = FontFamily.SansSerif
                 )
                 Icon(
                     painterResource(R.drawable.ic_app),
                     contentDescription = stringResource(R.string.app_icon_desc),
-                    tint = VioletaFuerte,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(64.dp)
                 )
             }
@@ -153,14 +150,14 @@ fun MainContent(
                                 stringResource(R.string.active_events_title),
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 28.sp,
-                                color = BlackPurple
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                             TextButton(onClick = { itemsCount = events.size }) {
                                 Text(
                                     text = if (itemsCount == events.size) stringResource(R.string.view_less) else stringResource(R.string.view_more),
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 18.sp,
-                                    color = Purple40
+                                    color = MaterialTheme.colorScheme.primary
                                 )
 
                             }

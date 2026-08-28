@@ -10,13 +10,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
@@ -27,10 +27,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.PurpleGrey80
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -60,7 +56,7 @@ fun PurpleTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp),
-            color = BlackPurple,
+            color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Start
         )
         Box(
@@ -82,17 +78,18 @@ fun PurpleTextField(
                     Text(
                         placeholder,
                         fontWeight = FontWeight.W400,
-                        modifier = Modifier.padding(4.dp)
+                        modifier = Modifier.padding(4.dp),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 },
                 colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedContainerColor = Pink40,
-                    focusedContainerColor = Color.White,
-                    unfocusedPlaceholderColor = PurpleGrey80,
-                    focusedBorderColor = VioletaFuerte,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
                     unfocusedBorderColor = Transparent,
-
-
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                     ),
                 keyboardOptions = KeyboardOptions(
                     imeAction = imeAction,
@@ -108,7 +105,7 @@ fun PurpleTextField(
                             trailingIcon,
                             contentDescription = "",
                             modifier = Modifier.padding(end = 16.dp, start = 8.dp),
-                            tint = VioletaFuerte,
+                            tint = MaterialTheme.colorScheme.primary,
                         )
 
                     }
@@ -119,7 +116,7 @@ fun PurpleTextField(
                             leadingIcon,
                             contentDescription = "",
                             modifier = Modifier.padding(end = 16.dp, start = 8.dp),
-                            tint = VioletaFuerte
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 })

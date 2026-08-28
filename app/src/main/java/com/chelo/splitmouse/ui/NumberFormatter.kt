@@ -16,12 +16,13 @@ fun Double.toArgentineCurrency(): String {
     return currencyFormatter.format(this)
 }
 
-fun formatFecha(fechaInput: String): String {
+fun formatFecha(fechaInput: String, locale: Locale = Locale.getDefault()): String {
     val formatterEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
     val fecha = LocalDate.parse(fechaInput, formatterEntrada)
 
-    val formatterSalida = DateTimeFormatter.ofPattern("EEEE, d 'de' MMMM", Locale("es", "ES"))
+    val pattern = if (locale.language == "es") "EEEE, d 'de' MMMM" else "EEEE, MMMM d"
+    val formatterSalida = DateTimeFormatter.ofPattern(pattern, locale)
 
     return fecha.format(formatterSalida).replaceFirstChar { it.uppercase() }
 }

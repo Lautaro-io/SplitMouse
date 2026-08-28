@@ -16,13 +16,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -34,9 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.ui.formatFecha
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.ui.toArgentineCurrency
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -66,7 +62,7 @@ fun CardEvent(
             ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(
             modifier = Modifier
@@ -82,7 +78,7 @@ fun CardEvent(
                 Text(
                     text = event.name,
                     fontSize = 26.sp,
-                    color = BlackPurple,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.weight(1f)
                 )
@@ -102,7 +98,7 @@ fun CardEvent(
             if (event.description.isNotEmpty()) {
                 Text(
                     text = event.description,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 22.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -117,7 +113,7 @@ fun CardEvent(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(32.dp))
-                        .background(Pink40),
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
@@ -125,15 +121,15 @@ fun CardEvent(
                         fontSize = 14.sp,
                         modifier = Modifier.padding(16.dp),
                         textAlign = TextAlign.Start,
-                        color = Color.Gray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(stringResource(R.string.spent_label))
+                    Text(stringResource(R.string.spent_label), color = MaterialTheme.colorScheme.onSurface)
                     Text(
                         text = event.totalAmount.toArgentineCurrency(),
                         fontWeight = FontWeight.ExtraBold,
-                        color = VioletaFuerte,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 22.sp,
                         maxLines = 1,
                     )

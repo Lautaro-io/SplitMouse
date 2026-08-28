@@ -19,6 +19,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,9 +46,6 @@ import com.chelo.splitmouse.ui.screens.components.AddExpenseBottomSheet
 import com.chelo.splitmouse.ui.screens.components.AddParticipantDialog
 import com.chelo.splitmouse.ui.screens.components.ContentDetail
 import com.chelo.splitmouse.ui.screens.components.DialogRoulette
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.EventDetailViewModel
 
 
@@ -67,7 +65,7 @@ fun EventDetailScreen(
     var participantId: Long? by remember { mutableStateOf(null) }
     val bgColor = Brush.verticalGradient(
         0.7f to Color.Transparent,
-        1.0f to Pink40
+        1.0f to MaterialTheme.colorScheme.surfaceVariant
     )
     var selectedExpense by remember { mutableStateOf<Expense?>(null) }
     BackHandler {
@@ -88,7 +86,7 @@ fun EventDetailScreen(
                         imageVector = Icons.Default.ArrowBackIosNew,
                         contentDescription = "",
                         modifier = Modifier.size(32.dp),
-                        tint = VioletaFuerte
+                        tint = MaterialTheme.colorScheme.primary
                     )
                 }
                 Spacer(Modifier.width(8.dp))
@@ -96,18 +94,13 @@ fun EventDetailScreen(
                     stringResource(R.string.event_detail_title),
                     fontSize = 24.sp,
                     fontStyle = FontStyle.Normal,
-                    color = VioletaFuerte,
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 8.dp)
                 )
 
             }
         },
-        floatingActionButton = {
-            Column() {
-
-            }
-        }
     ) { innerPadding ->
         when {
             showDialogParticipant -> {
@@ -164,7 +157,6 @@ fun EventDetailScreen(
                     onExpenseEdit = {
                         selectedExpense = it
                         showBottomModal = true
-                        viewModel.updateExpense(it)
                     },
                     onExpenseDelete = {
                         selectedExpense = it
@@ -174,6 +166,7 @@ fun EventDetailScreen(
                         showRouletteDialog = true
                     },
                     onNewExpenseClick = {
+                        selectedExpense = null
                         showBottomModal = true
                     },
                     onDebtButtonClick = {
@@ -185,7 +178,10 @@ fun EventDetailScreen(
                     showBottomModal -> {
                         AddExpenseBottomSheet(
                             selectedExpense,
-                            onDismiss = { showBottomModal = false },
+                            onDismiss = {
+                                showBottomModal = false
+                                selectedExpense = null
+                            },
                             state.participants,
                             onAddExpenseClick = { amount, description, payerId ->
                                 if (selectedExpense != null) {
@@ -239,11 +235,11 @@ fun DeleteDialog(
     name: String,
 ) {
     AlertDialog(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         onDismissRequest = onDismiss,
-        title = { Text(title, fontWeight = FontWeight.Bold) },
+        title = { Text(title, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface) },
         text = {
-            Text(label)
+            Text(label, color = MaterialTheme.colorScheme.onSurface)
         },
         confirmButton = {
             TextButton(onClick = { onConfirm() }) {
@@ -273,14 +269,14 @@ fun TextEmptyParticipants(text: String, modifier: Modifier = Modifier) {
             painterResource(R.drawable.ic_cash),
             modifier = Modifier.size(64.dp),
             contentDescription = stringResource(R.string.add_participants_icon_desc),
-            tint = VioletaFuerte
+            tint = MaterialTheme.colorScheme.primary
         )
 
         Text(
             text,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = BlackPurple,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )

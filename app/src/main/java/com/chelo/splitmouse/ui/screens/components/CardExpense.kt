@@ -13,12 +13,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -26,8 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Expense
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.ui.toArgentineCurrency
 
 
@@ -38,7 +36,10 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
         Row(
             modifier = Modifier
@@ -51,12 +52,12 @@ fun CardExpense(name : String, expense: Expense = Expense(1, 1000.0, "Coca Cola"
                 modifier = Modifier
                     .size(54.dp)
                     .clip(CircleShape)
-                    .background(Pink40)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_cash),
                     contentDescription = "Expense",
-                    tint = VioletaFuerte,
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

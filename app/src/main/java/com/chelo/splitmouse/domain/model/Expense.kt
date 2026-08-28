@@ -4,7 +4,7 @@ import com.chelo.splitmouse.data.local.entities.ExpenseEntity
 
 
 data class Expense(
-     val id: Long ,
+    val id: Long,
     val amount: Double,
     val description: String,
     val eventId: Long,

@@ -22,6 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults.inputChipColors
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -45,9 +46,6 @@ import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Expense
 import com.chelo.splitmouse.domain.model.Participant
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Purple40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -62,21 +60,11 @@ fun AddExpenseBottomSheet(
     )
 
     var participantId by remember { mutableLongStateOf(0L) }
-    var amount by remember { mutableDoubleStateOf(0.0) }
-    var nameExpense by remember { mutableStateOf("") }
-    var selectedParticipantId by remember { mutableStateOf<Long>(participants[0].id) }
+    var amount by remember(expense) { mutableDoubleStateOf(expense?.amount ?: 0.0) }
+    var nameExpense by remember(expense) { mutableStateOf(expense?.description ?: "") }
+    var selectedParticipantId by remember(expense) { mutableLongStateOf(expense?.payerId ?: participants.firstOrNull()?.id ?: 0L) }
     var isSelected by remember { mutableStateOf(false) }
 
-    expense?.let {
-        amount = it.amount
-        nameExpense = it.description
-        selectedParticipantId = it.payerId
-    }
-    fun clearFields() {
-        amount = 0.0
-        nameExpense = ""
-        selectedParticipantId = participants.firstOrNull()?.id ?: 0L
-    }
 
 
     ModalBottomSheet(
@@ -98,7 +86,8 @@ fun AddExpenseBottomSheet(
                 fontWeight = FontWeight.Bold,
                 fontSize = 40.sp,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 stringResource(R.string.event_description_subtitle),
@@ -107,19 +96,19 @@ fun AddExpenseBottomSheet(
                     .fillMaxWidth()
                     .padding(end = 16.dp, bottom = 16.dp, top = 4.dp),
                 textAlign = TextAlign.Start,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Text(
                 stringResource(R.string.who_paid_label),
                 fontWeight = FontWeight.ExtraBold,
-                color = VioletaFuerte,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 24.sp,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 16.dp, bottom = 16.dp, top = 4.dp),
                 textAlign = TextAlign.Start
             )
-            LazyRow() {
+            LazyRow {
                 if (participants.isEmpty()) {
                     item {
                         Text(
@@ -148,10 +137,10 @@ fun AddExpenseBottomSheet(
                         label = { Text(participant.name) },
                         shape = RoundedCornerShape(32.dp),
                         colors = inputChipColors(
-                            selectedContainerColor = VioletaFuerte,
-                            selectedLabelColor = Color.White,
-                            containerColor = Pink40,
-                            labelColor = Purple40
+                            selectedContainerColor = MaterialTheme.colorScheme.primary,
+                            selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            labelColor = MaterialTheme.colorScheme.primary
                         )
                     )
                 }
@@ -166,8 +155,8 @@ fun AddExpenseBottomSheet(
             PurpleTextField(
                 text = stringResource(R.string.value_label),
                 placeholder = stringResource(R.string.value_placeholder),
-                value = amount.toInt().toString(),
-                onValueChange = { amount = it.toDouble() },
+                value = if (amount == 0.0) "" else amount.toInt().toString(),
+                onValueChange = { amount = it.toDoubleOrNull() ?: 0.0 },
                 leadingIcon = Icons.Default.AttachMoney,
                 isNumber = true
             )
@@ -179,7 +168,6 @@ fun AddExpenseBottomSheet(
             Button(
                 onClick = {
                     onAddExpenseClick(amount, nameExpense, selectedParticipantId)
-                    clearFields()
                     onDismiss()
                 },
                 enabled = amount > 0 && nameExpense.isNotBlank(),
@@ -187,8 +175,8 @@ fun AddExpenseBottomSheet(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = VioletaFuerte,
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
             ) {
@@ -205,7 +193,7 @@ fun AddExpenseBottomSheet(
             TextButton(onClick = onDismiss) {
                 Text(
                     stringResource(R.string.cancel_action),
-                    color = Purple40
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

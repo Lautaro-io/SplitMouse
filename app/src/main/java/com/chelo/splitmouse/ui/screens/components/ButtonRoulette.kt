@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -24,9 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.chelo.splitmouse.R
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.LowYellow
-import com.chelo.splitmouse.ui.theme.Yellow
 
 @Composable
 fun ButtonRoulette(onClick: () -> Unit) {
@@ -34,7 +32,10 @@ fun ButtonRoulette(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp), shape = RoundedCornerShape(32.dp),
-        colors = CardDefaults.cardColors(containerColor = LowYellow)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary
+        )
     ) {
         Row(
             modifier = Modifier
@@ -46,16 +47,16 @@ fun ButtonRoulette(onClick: () -> Unit) {
                 modifier = Modifier
                     .clip(CircleShape)
                     .size(52.dp)
-                    .background(Yellow),
+                    .background(MaterialTheme.colorScheme.tertiaryContainer),
                 contentAlignment = Alignment.Center
             ) {
                 Image(painterResource(R.drawable.ic_dice), contentDescription = stringResource(R.string.dice_icon_desc), Modifier.size(48.dp))
             }
             Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 4.dp)) {
-                Text(stringResource(R.string.roulette_label), fontWeight = FontWeight.SemiBold )
-                Text(stringResource(R.string.roulette_title))
+                Text(stringResource(R.string.roulette_label), fontWeight = FontWeight.SemiBold, color = MaterialTheme.colorScheme.onTertiary)
+                Text(stringResource(R.string.roulette_title), color = MaterialTheme.colorScheme.onTertiary)
             }
-            TextButton(onClick = onClick) { Text(stringResource(R.string.play_now_action), color = BlackPurple, fontWeight = FontWeight.Bold) }
+            TextButton(onClick = onClick) { Text(stringResource(R.string.play_now_action), color = MaterialTheme.colorScheme.onTertiary, fontWeight = FontWeight.Bold) }
         }
     }
 }

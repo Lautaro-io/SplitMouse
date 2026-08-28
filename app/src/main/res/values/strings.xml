@@ -90,4 +90,15 @@
     <string name="add_expenses_msg">Agrega nuevos gastos para empezar a repartir.</string>
     <string name="split_expenses_action">Repartir gastos</string>
     <string name="split_expenses_icon_desc">Repartir gastos</string>
+    <!-- Participant Panel -->
+    <string name="participants_label">Participantes</string>
+    <!-- Settlement Screen -->
+    <string name="settlement_title">Liquidación de pagos</string>
+    <string name="payment_plan_label">PLAN DE PAGO</string>
+    <string name="people_count_label">%1$d \npersonas</string>
+    <string name="total_spent_label">Total gastado.</string>
+    <string name="fixed_fee_label">Cuota fija</string>
+    <string name="each_one_label">cada uno</string>
+    <string name="debt_payment_text">%1$s paga a %2$s</string>
+    <string name="back_icon_desc">Atrás</string>
 </resources>

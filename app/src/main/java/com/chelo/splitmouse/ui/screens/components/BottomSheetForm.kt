@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,8 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
-import com.chelo.splitmouse.ui.theme.Purple40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.viewmodel.AddEventViewModel
 import com.chelo.splitmouse.viewmodel.FieldType
 import org.koin.androidx.compose.koinViewModel
@@ -102,7 +100,8 @@ fun BottomForm(
                 fontWeight = FontWeight.Bold,
                 fontSize = 40.sp,
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
+                textAlign = TextAlign.Start,
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 stringResource(R.string.event_description_subtitle),
@@ -111,7 +110,7 @@ fun BottomForm(
                     .fillMaxWidth()
                     .padding(end = 16.dp, bottom = 16.dp, top = 4.dp),
                 textAlign = TextAlign.Start,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             PurpleTextField(
                 text = stringResource(R.string.event_name_label),
@@ -155,8 +154,8 @@ fun BottomForm(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = VioletaFuerte,
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
             ) {
@@ -173,7 +172,7 @@ fun BottomForm(
             TextButton(onClick = onDismiss) {
                 Text(
                     stringResource(R.string.cancel_action),
-                    color = Purple40
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
         }

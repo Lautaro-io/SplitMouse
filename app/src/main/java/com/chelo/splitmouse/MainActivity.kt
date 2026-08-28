@@ -5,13 +5,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.chelo.splitmouse.ui.navigation.AppNavigation
+import com.chelo.splitmouse.ui.theme.SplitMouseTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AppNavigation()
+            SplitMouseTheme {
+                AppNavigation()
+            }
         }
 
     }

@@ -20,10 +20,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,17 +36,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Debt
 import com.chelo.splitmouse.domain.model.Event
-import com.chelo.splitmouse.ui.screens.components.ParticipantsTip
 import com.chelo.splitmouse.ui.screens.components.PersonalizedText
-import com.chelo.splitmouse.ui.theme.BlackPurple
 import com.chelo.splitmouse.ui.theme.Pink123
-import com.chelo.splitmouse.ui.theme.Pink40
 import com.chelo.splitmouse.ui.theme.Purple40
 import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import com.chelo.splitmouse.ui.toArgentineCurrency
@@ -58,10 +59,12 @@ fun SettlementScreen(
     val state by viewModel.uiState.collectAsState()
     val event = state.event ?: return
 
-    BackHandler() {
+    BackHandler {
         onBack()
     }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background)) {
         CardHeader(event, state.participants.size, onBack = onBack)
 
         Column(
@@ -72,27 +75,24 @@ fun SettlementScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                "Liquidacion de pagos",
-                color = BlackPurple,
+                stringResource(R.string.settlement_title),
+                color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 24.sp,
                 modifier = Modifier.fillMaxWidth(),
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Start
             )
 
-            LazyColumn() {
+            LazyColumn {
                 items(state.debts.reversed()) { debt ->
                     DebtItem(debt)
                 }
-                item  {
+                item {
                     Spacer(modifier = Modifier.height(64.dp))
-
                 }
             }
-
         }
     }
-
 }
 
 @Composable
@@ -102,7 +102,7 @@ fun DebtItem(debt: Debt) {
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -115,38 +115,34 @@ fun DebtItem(debt: Debt) {
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
-                    .background(Pink40)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 Text(
                     debt.from.take(2).uppercase(),
-                    color = VioletaFuerte,
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 24.sp,
                     modifier = Modifier.align(Alignment.Center),
                     fontWeight = FontWeight.Bold
                 )
             }
 
-
             PersonalizedText(
-                "${debt.from.take(8)} paga a ${debt.to.take(8)}",
+                stringResource(R.string.debt_payment_text, debt.from.take(8), debt.to.take(8)),
                 listOf(debt.from, debt.to),
                 16,
-                color = BlackPurple,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.SemiBold
             )
 
             Text(
                 text = debt.amount.toArgentineCurrency(),
                 fontWeight = FontWeight.ExtraBold,
-                color = VioletaFuerte,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 22.sp
             )
-
         }
-
     }
 }
-
 
 @Composable
 fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) {
@@ -161,19 +157,17 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
             .fillMaxHeight(0.5f)
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
             .background(bgColor),
-
-        ) {
+    ) {
         IconButton(
             onClick = onBack,
             modifier = Modifier
                 .statusBarsPadding()
                 .align(Alignment.TopStart)
                 .padding(start = 8.dp),
-
-            ) {
+        ) {
             Icon(
                 Icons.Default.ArrowBackIosNew,
-                contentDescription = "Atras",
+                contentDescription = stringResource(R.string.back_icon_desc),
                 tint = Color.White,
                 modifier = Modifier.size(20.dp)
             )
@@ -199,7 +193,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        "PLAN DE PAGO",
+                        stringResource(R.string.payment_plan_label),
                         color = Color.LightGray,
                         fontWeight = FontWeight.Light,
                         fontSize = 24.sp
@@ -211,8 +205,8 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         fontSize = 32.sp
                     )
                 }
-                ParticipantsTip("$participantSize \npersonas", modifier = Modifier.weight(1f))
-
+                // Usamos Pink123 para el tip de participantes dentro del header violeta para que no cambie en dark mode
+                ParticipantsTipHeader(stringResource(R.string.people_count_label, participantSize), modifier = Modifier.weight(1f))
             }
 
             Row(
@@ -228,7 +222,7 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         .height(180.dp)
                 ) {
                     Text(
-                        "Total gastado.",
+                        stringResource(R.string.total_spent_label),
                         color = Color.LightGray,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
@@ -249,14 +243,14 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         .height(180.dp)
                 ) {
                     Text(
-                        "Cuota fija",
+                        stringResource(R.string.fixed_fee_label),
                         color = Color.LightGray,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    val quote = event.totalAmount / participantSize
+                    val quote = if (participantSize > 0) event.totalAmount / participantSize else 0.0
                     Text(
                         quote.toArgentineCurrency(),
                         maxLines = 1,
@@ -265,28 +259,25 @@ fun CardHeader(event: Event, participantSize: Int = 5, onBack: () -> Unit = {}) 
                         fontWeight = FontWeight.ExtraBold
                     )
                     Text(
-                        "cada uno",
+                        stringResource(R.string.each_one_label),
                         color = Color.LightGray,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
-
             }
-
-
         }
-
-
     }
 }
-
 
 @Composable
 fun PersonalizedCard(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Pink123, contentColor = Color.White),
+        colors = CardDefaults.cardColors(
+            containerColor = Pink123, // Mantenemos el lila fijo para estas cards del header
+            contentColor = Color.White
+        ),
         shape = RoundedCornerShape(32.dp)
     ) {
         Column(
@@ -297,21 +288,32 @@ fun PersonalizedCard(modifier: Modifier = Modifier, content: @Composable () -> U
             content()
         }
     }
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@Composable
+fun ParticipantsTipHeader(text: String , modifier : Modifier = Modifier) {
+    androidx.compose.material3.Surface(
+        modifier = modifier
+            .padding(16.dp)
+            ,
+        shape = RoundedCornerShape(32.dp),
+        shadowElevation = 2.dp,
+        color = Pink123 // Color fijo para el header
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(Icons.Default.Group, contentDescription = "", tint = Color.White)
+            Text(
+                text,
+                color = Color.White,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(16.dp),
+                maxLines = 2
+            )
+        }
+    }
+}

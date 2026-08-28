@@ -25,6 +25,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,11 +53,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Participant
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.LowYellow
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Pink80
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -151,17 +147,17 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                         stringResource(R.string.roulette_title_dialog),
                         fontSize = 24.sp,
                         fontWeight = FontWeight.ExtraBold,
-                        color = BlackPurple
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         stringResource(R.string.roulette_description),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Light,
-                        color = BlackPurple
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(24.dp))
-                    Box(contentAlignment = Alignment.TopCenter, modifier = Modifier.clip(CircleShape).background(Pink80)) {
+                    Box(contentAlignment = Alignment.TopCenter, modifier = Modifier.clip(CircleShape).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))) {
                         ChooseWinnerRoulette(
                             participants,
                             modifier = Modifier
@@ -174,7 +170,7 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                                 .size(60.dp)
                                 .align(Alignment.Center),
                             shape = CircleShape,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.surface,
                             tonalElevation = 4.dp,
                             shadowElevation = 4.dp
                         ) {
@@ -183,7 +179,7 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                                     painter = painterResource(id = R.drawable.ic_dice),
                                     contentDescription = null,
                                     modifier = Modifier.size(30.dp),
-                                    tint = Color(0xFF6200EE)
+                                    tint = MaterialTheme.colorScheme.primary
                                 )
                             }
                         }
@@ -210,8 +206,8 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                             onClick = onDismiss,
                             modifier = Modifier.padding(top = 24.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Pink40,
-                                contentColor = VioletaFuerte
+                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                                contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                             )
                         ) {
                             Text(stringResource(R.string.cancel_uppercase), fontWeight = FontWeight.Bold)
@@ -231,8 +227,8 @@ fun DialogRoulette(participants: List<Participant>, onDismiss: () -> Unit) {
                                     winner = participants[indexGanador]
                                 }
                             }, colors = ButtonDefaults.buttonColors(
-                                containerColor = VioletaFuerte,
-                                contentColor = Pink40
+                                containerColor = MaterialTheme.colorScheme.primary,
+                                contentColor = MaterialTheme.colorScheme.onPrimary
                             ),
                             modifier = Modifier.padding(top = 24.dp)
                         ) {
@@ -256,7 +252,7 @@ fun CardWinner(name: String = "Marco") {
             .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(32.dp),
-        color = LowYellow
+        color = MaterialTheme.colorScheme.tertiary
 
     ) {
         Column(
@@ -264,8 +260,8 @@ fun CardWinner(name: String = "Marco") {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(stringResource(R.string.game_over), fontSize = 18.sp)
-            Text(stringResource(R.string.winner_pays_all, name), fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+            Text(stringResource(R.string.game_over), fontSize = 18.sp, color = MaterialTheme.colorScheme.onTertiary)
+            Text(stringResource(R.string.winner_pays_all, name), fontSize = 24.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.onTertiary)
 
         }
     }

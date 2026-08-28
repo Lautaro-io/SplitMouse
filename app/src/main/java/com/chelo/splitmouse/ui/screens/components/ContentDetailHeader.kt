@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,8 +24,6 @@ import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Event
 import com.chelo.splitmouse.domain.model.Participant
 import com.chelo.splitmouse.ui.formatFecha
-import com.chelo.splitmouse.ui.theme.BlackPurple
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Composable
 fun ContentDetailHeader(
@@ -37,7 +36,7 @@ fun ContentDetailHeader(
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text(
             event.name,
-            color = BlackPurple,
+            color = MaterialTheme.colorScheme.onSurface,
             fontSize = 42.sp,
             fontWeight = FontWeight.ExtraBold,
             overflow = TextOverflow.Ellipsis,
@@ -53,12 +52,12 @@ fun ContentDetailHeader(
             Icon(
                 Icons.Default.CalendarMonth,
                 contentDescription = stringResource(R.string.event_date_label),
-                tint = VioletaFuerte
+                tint = MaterialTheme.colorScheme.primary
             )
             Spacer(Modifier.width(4.dp))
             Text(
                 formatFecha(event.date),
-                color = VioletaFuerte,
+                color = MaterialTheme.colorScheme.primary,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.fillMaxWidth(),
@@ -70,7 +69,7 @@ fun ContentDetailHeader(
             CardDescriptionDetail(event.description)
         }
         CardTotalSpent(event, participants.size)
-        if (participants.isNotEmpty()){
+        if (participants.size > 1){
             ButtonRoulette(onButtonRouletteClick)
         }
 

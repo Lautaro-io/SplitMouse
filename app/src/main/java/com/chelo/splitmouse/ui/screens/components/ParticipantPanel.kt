@@ -23,14 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.chelo.splitmouse.R
 import com.chelo.splitmouse.domain.model.Participant
-import com.chelo.splitmouse.ui.theme.Pink40
-import com.chelo.splitmouse.ui.theme.Purple40
-import com.chelo.splitmouse.ui.theme.VioletaFuerte
 
 @Composable
 fun ParticipantPanel(
@@ -47,8 +46,8 @@ fun ParticipantPanel(
     ) {
 
         Text(
-            "Participantes",
-            color = VioletaFuerte,
+            stringResource(R.string.participants_label),
+            color = MaterialTheme.colorScheme.primary,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
             modifier = Modifier.fillMaxWidth(),
@@ -65,18 +64,18 @@ fun ParticipantPanel(
                 InputChip(
                     selected = false,
                     onClick = onAddParticipantClick,
-                    label = { Text("Add", fontWeight = FontWeight.Bold) },
+                    label = { Text(stringResource(R.string.add_participant_action), fontWeight = FontWeight.Bold) },
                     leadingIcon = {
                         Icon(
                             Icons.Default.Add,
-                            contentDescription = "Agregar participante",
+                            contentDescription = stringResource(R.string.add_participant_title),
                             modifier = Modifier.size(InputChipDefaults.IconSize)
                         )
                     },
                     shape = RoundedCornerShape(32.dp),
                     colors = inputChipColors(
-                        containerColor = Pink40,
-                        labelColor = Purple40
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        labelColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -92,12 +91,12 @@ fun ParticipantPanel(
                             }
                         ),
                     shape = RoundedCornerShape(32.dp),
-                    color = Pink40
+                    color = MaterialTheme.colorScheme.surfaceVariant
                 ) {
                     Text(
                         text = participant.name,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                        color = Purple40,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
