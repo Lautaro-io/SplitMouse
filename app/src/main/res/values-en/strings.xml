@@ -51,8 +51,18 @@
     <string name="delete_icon_desc">Delete</string>
 
     <!-- Roulette -->
+    <string name="roulette_label">ROULETTE</string>
     <string name="roulette_title">Let luck decide who pays!</string>
+    <string name="roulette_title_dialog">Lucky Roulette</string>
+    <string name="roulette_description">One spins, one pays—who will be the lucky one?</string>
+    <string name="play_now_action">PLAY NOW ></string>
+    <string name="dice_icon_desc">Dice</string>
     <string name="spin_action">SPIN!</string>
+    <string name="winner_pays_all">%1$s pays for everything!</string>
+    <string name="game_over">GAME OVER</string>
+    <string name="close_dialog_desc">Close dialog</string>
+    <string name="cancel_uppercase">CANCEL</string>
+
     <!-- Event Detail -->
     <string name="event_detail_title">Event Detail</string>
     <string name="delete_participant_confirmation">Are you sure you want to delete %1$s?</string>
